@@ -602,8 +602,73 @@
             { "시도": "충청북도", "시군구": "청주시청원구", "총인구수": 186088, "고령인구수": 33438, "대형병원수": 1, "의과전문의수": 121 },
             { "시도": "충청북도", "시군구": "청주시흥덕구", "총인구수": 292625, "고령인구수": 43598, "대형병원수": 2, "의과전문의수": 133 },
             { "시도": "충청북도", "시군구": "충주시", "총인구수": 205978, "고령인구수": 54980, "대형병원수": 2, "의과전문의수": 97 }
-        ];
+      ];
 
+        // 2. 데모 가동 버튼을 클릭했을 때 호출되는 핵심 구동 함수
+        function loadDemoData() {
+            try {
+                // 데이터 비율 및 보건 인프라 계산 가동
+                const processedDataset = demoDataset.map(item => {
+                    const totalPop = Number(item.총인구수) || 1;
+                    const elderlyPop = Number(item.고령인구수) || 0;
+                    const hospCount = Number(item.대형병원수) || 0;
+                    const docCount = Number(item.의과전문의수) || 0;
+
+                    return {
+                        ...item,
+                        총인구수: totalPop,
+                        고령인구수: elderlyPop,
+                        대형병원수: hospCount,
+                        의과전문의수: docCount,
+                        // 10만명당 지표 및 노약자 비율 수식 적용
+                        노약자_비율_pct: (elderlyPop / totalPop) * 100,
+                        인구_10만명당_대형병원수: (hospCount / totalPop) * 100000,
+                        인구_10만명당_전문의수: (docCount / totalPop) * 100000
+                    };
+                });
+
+                // 글로벌 병합 데이터 변수에 할당하여 다른 컴포넌트들과 동기화
+                finalMergedDataset = processedDataset;
+                
+                // 프로그램 스펙 내 정의된 현재 군집 값 가져오기 (기본값 3)
+                const currentK = typeof currentClusterK !== 'undefined' ? currentClusterK : 3;
+                
+                // 3. AI 군집 및 화면 렌더링 파이프라인 트리거 (전체 대시보드 강제 언락)
+                if (typeof runKMeansClustering === 'function') {
+                    latestAnalyzedDataset = runKMeansClustering(finalMergedDataset, currentK);
+                } else {
+                    latestAnalyzedDataset = finalMergedDataset;
+                }
+
+                // 대시보드 컨테이너 표시로 숨겨진 영역 완전 노출
+                const dashboardContent = document.getElementById('dashboard-content');
+                if (dashboardContent) dashboardContent.classList.remove('hidden');
+
+                // 상단 KPI 카드, 데이터 테이블, 하단 차트 시각화 순차적 갱신
+                if (typeof updateSummaryDashboard === 'function') updateSummaryDashboard(latestAnalyzedDataset);
+                if (typeof renderVisualizations === 'function') renderVisualizations(latestAnalyzedDataset);
+                if (typeof populateMergedTable === 'function') populateMergedTable(latestAnalyzedDataset);
+                if (typeof updateSidoFilterOptions === 'function') updateSidoFilterOptions();
+
+                // 성공 알림(토스트) 표시
+                if (typeof showToast === 'function') {
+                    showToast("데모 데이터가 완벽하게 로드되었으며, AI 의료 인프라 비교 시각화가 완료되었습니다.");
+                } else {
+                    alert("데모 데이터 분석이 완료되었습니다. 하단 대시보드와 비교 그래프를 확인하세요!");
+                }
+            } catch (error) {
+                console.error("데모 데이터 실행 오류 상세:", error);
+                alert("데이터 가동 중 오류가 발생했습니다: " + error.message);
+            }
+        }
+
+        // 4. 페이지 로드 시 HTML 엘리먼트와 이벤트 핸들러 바인딩 보장
+        document.addEventListener('DOMContentLoaded', () => {
+            const demoBtn = document.getElementById('load-demo-btn');
+            if (demoBtn) {
+                demoBtn.addEventListener('click', loadDemoData);
+            }
+        });
         // 탭 전환 시스템 함수 추가
         function switchTab(tabName) {
             const uploadPanel = document.getElementById('panel-upload');
