@@ -13,20 +13,11 @@
         body {
             font-family: 'Pretendard', sans-serif;
         }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .step-transition { transition: all 0.4s ease-in-out; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
@@ -42,35 +33,48 @@
                     <p class="text-xs text-slate-500">인구 · 전문의 · 대형병원 반영 보건 의료 격차 분석 시스템</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button id="load-demo-btn" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-md transition">
-                    <i data-lucide="play" class="w-4 h-4"></i>
-                    데모 데이터 자동 가동하기
-                </button>
-            </div>
+            <button id="back-to-upload-btn" class="hidden flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold border border-slate-300 transition">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                파일 업로드 화면으로 이동
+            </button>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <div id="upload-panel" class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
-            <div class="border-b border-slate-100 pb-4">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <i data-lucide="file-up" class="text-blue-600"></i>
-                    데이터 파일 업로드
+        <div id="step-upload" class="step-transition bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-8 max-w-4xl mx-auto my-8">
+            <div class="text-center space-y-2 max-w-xl mx-auto">
+                <h2 class="text-2xl font-extrabold text-slate-900 flex items-center justify-center gap-2">
+                    <i data-lucide="file-up" class="text-blue-600 w-7 h-7"></i>
+                    1단계: 데이터 분석 준비
                 </h2>
-                <p class="text-xs text-slate-500 mt-1">다운로드 받으신 4가지 분석 대상 엑셀 파일(.xlsx)을 별도 변환 없이 그대로 선택해 주세요.</p>
+                <p class="text-sm text-slate-500">분석에 필요한 4가지 대상 엑셀 파일(.xlsx)을 업로드하거나,<br>데모 가동 버튼을 눌러 즉시 샘플 분석 대시보드로 이동하세요.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-600 text-white rounded-xl shadow-md">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-blue-900">준비된 파일이 없으신가요?</h4>
+                        <p class="text-xs text-blue-700">시뮬레이션용 내장 데이터를 즉시 가동하여 화면을 확인할 수 있습니다.</p>
+                    </div>
+                </div>
+                <button id="load-demo-btn" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap">
+                    <i data-lucide="play" class="w-4 h-4"></i>
+                    데모 데이터로 바로 이동하기
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition flex flex-col justify-between space-y-3">
                     <div>
                         <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">1. 인구 데이터</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">1.인구 데이터.xlsx</h4>
-                        <p class="text-[10px] text-slate-400 mt-1">전국 총 인구수, 고령 인구수 분석용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-blue-500 text-slate-600 hover:text-blue-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 업로드
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-blue-500 text-slate-600 hover:text-blue-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 찾기
                         <input type="file" id="file-pop" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-pop" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
@@ -80,10 +84,9 @@
                     <div>
                         <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">2. 전문의 데이터</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">2.전문의 데이터.xlsx</h4>
-                        <p class="text-[10px] text-slate-400 mt-1">hospBasisList 의과전문의 수 지역 매핑용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-emerald-500 text-slate-600 hover:text-emerald-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 업로드
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-emerald-500 text-slate-600 hover:text-emerald-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 찾기
                         <input type="file" id="file-doc" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-doc" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
@@ -93,10 +96,9 @@
                     <div>
                         <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">3. 종합병원 수</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">3.종합병원 수.xlsx</h4>
-                        <p class="text-[10px] text-slate-400 mt-1">종합병원 유무 확인용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-purple-500 text-slate-600 hover:text-purple-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 업로드
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-purple-500 text-slate-600 hover:text-purple-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 찾기
                         <input type="file" id="file-general" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-general" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
@@ -106,58 +108,56 @@
                     <div>
                         <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded">4. 상급종합병원 수</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">4.상급종합병원 수.xlsx</h4>
-                        <p class="text-[10px] text-slate-400 mt-1">상급종합병원 유무 확인용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-rose-500 text-slate-600 hover:text-rose-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 업로드
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-rose-500 text-slate-600 hover:text-rose-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 찾기
                         <input type="file" id="file-super" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-super" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
                 </div>
             </div>
 
-            <div class="flex justify-end pt-2 border-t border-slate-100">
-                <button id="merge-analyze-btn" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/10 transition">
-                    <i data-lucide="merge"></i>
-                    업로드 데이터 실시간 분석 시작
+            <div class="pt-4 border-t border-slate-100 flex justify-center">
+                <button id="merge-analyze-btn" class="w-full sm:w-80 flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3.5 rounded-xl text-base font-bold shadow-lg transition">
+                    <i data-lucide="merge" class="w-5 h-5"></i>
+                    업로드 데이터 융합 및 분석 시작
                 </button>
             </div>
         </div>
 
-        <div id="dashboard-content" class="hidden space-y-8 animate-fade-in">
+        <div id="step-dashboard" class="hidden step-transition space-y-8">
             
+            <div class="border-b border-slate-200 pb-4">
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="bar-chart-3" class="text-blue-600"></i>
+                    2단계: 보건의료 인프라 종합 격차 분석 리포트
+                </h2>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-blue-50 text-blue-600 rounded-xl">
-                        <i data-lucide="users" class="w-6 h-6"></i>
-                    </div>
+                    <div class="p-4 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="users" class="w-6 h-6"></i></div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">전국 총인구 수</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-total-pop">0명</h3>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-indigo-50 text-indigo-600 rounded-xl">
-                        <i data-lucide="contact" class="w-6 h-6"></i>
-                    </div>
+                    <div class="p-4 bg-indigo-50 text-indigo-600 rounded-xl"><i data-lucide="contact" class="w-6 h-6"></i></div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">65세 이상 고령인구 수</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-total-elderly">0명</h3>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-emerald-50 text-emerald-600 rounded-xl">
-                        <i data-lucide="percentage" class="w-6 h-6"></i>
-                    </div>
+                    <div class="p-4 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="percentage" class="w-6 h-6"></i></div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">평균 노약자 비율</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-avg-elderly-pct">0.00 %</h3>
                     </div>
                 </div>
                 <div class="bg-red-50 rounded-2xl border border-red-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-red-100 text-red-600 rounded-xl">
-                        <i data-lucide="alert-octagon" class="w-6 h-6"></i>
-                    </div>
+                    <div class="p-4 bg-red-100 text-red-600 rounded-xl"><i data-lucide="alert-octagon" class="w-6 h-6"></i></div>
                     <div>
                         <p class="text-xs font-semibold text-red-700 uppercase tracking-wider">대형병원 전무 시군구</p>
                         <h3 class="text-2xl font-bold text-red-900 mt-1" id="kpi-no-hosp-count">0 곳</h3>
@@ -167,12 +167,9 @@
 
             <div id="no-hospital-alert-box" class="bg-red-50 border border-red-100 rounded-2xl p-6 hidden">
                 <div class="flex items-start gap-3">
-                    <div class="p-1.5 bg-red-100 text-red-700 rounded-lg">
-                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                    </div>
+                    <div class="p-1.5 bg-red-100 text-red-700 rounded-lg"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
                     <div class="space-y-2 w-full">
                         <h4 class="font-bold text-red-900 text-sm">🚨 대형병원(종합병원/상급종합병원)이 단 1개도 없는 의료 취약지</h4>
-                        <p class="text-xs text-red-700">관할 내에 필수 응급/중증 관리를 책임질 대형병원이 전무하여 대진료권 이동이 강제되는 의료 취약지입니다.</p>
                         <div id="no-hospital-list-container" class="flex flex-wrap gap-2 pt-1"></div>
                     </div>
                 </div>
@@ -182,631 +179,19 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-slate-50 border-b border-slate-200 gap-4">
                     <button onclick="toggleAccordion('merged-data-panel')" class="flex items-center gap-2 font-semibold text-slate-700 focus:outline-none">
                         <i data-lucide="shuffle" class="w-5 h-5 text-blue-600"></i>
-                        📊 분석 결과 다운받기 (<span id="data-count-badge">0</span>개 구역 분석완료)
+                        📊 분석 결과 리스트 확인 (<span id="data-count-badge">0</span>개 구역)
                         <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transform transition-transform ml-1" id="accordion-icon"></i>
                     </button>
-                    <button id="download-excel-btn" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition whitespace-nowrap">
+                    <button id="download-excel-btn" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition">
                         <i data-lucide="download" class="w-4 h-4"></i>
                         융합 데이터 엑셀(.xlsx) 다운로드
                     </button>
                 </div>
-                <div id="merged-data-panel" class="hidden max-h-[400px] overflow-auto">
+                <div id="merged-data-panel" class="hidden max-h-[350px] overflow-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-100/50 text-slate-600 text-xs uppercase font-semibold sticky top-0 bg-white shadow-sm z-10">
                                 <th class="p-3 border-b border-slate-200">시도</th>
                                 <th class="p-3 border-b border-slate-200">시군구</th>
                                 <th class="p-3 border-b border-slate-200 text-right">총인구수</th>
-                                <th class="p-3 border-b border-slate-200 text-right">고령인구수</th>
-                                <th class="p-3 border-b border-slate-200 text-right">노약자 비율 (%)</th>
-                                <th class="p-3 border-b border-slate-200 text-right">대형병원수 (종합+상급)</th>
-                                <th class="p-3 border-b border-slate-200 text-right">의과전문의수</th>
-                                <th class="p-3 border-b border-slate-200 text-right">10만명당 대형병원</th>
-                                <th class="p-3 border-b border-slate-200 text-right">10만명당 전문의</th>
-                                <th class="p-3 border-b border-slate-200 text-center">소속 군집</th>
-                            </tr>
-                        </thead>
-                        <tbody id="merged-table-body" class="text-sm divide-y divide-slate-100"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                            <i data-lucide="search-code" class="w-5 h-5"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-slate-900">지역별 대시보드 및 상세 분석</h3>
-                    </div>
-                    <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <label for="sido-filter" class="text-sm font-semibold text-slate-500 whitespace-nowrap">시도 필터:</label>
-                        <select id="sido-filter" class="w-full sm:w-56 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="전체">전체 지역보기</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
-                        <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-                            인구 10만명당 대형병원수 비교 (상위 5 / 하위 5)
-                        </h4>
-                        <div id="chart-hosp" class="w-full h-80"></div>
-                    </div>
-                    <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
-                        <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
-                            인구 10만명당 전문의수 비교 (상위 5 / 하위 5)
-                        </h4>
-                        <div id="chart-doc" class="w-full h-80"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
-                <div class="border-b border-slate-100 pb-5 space-y-2">
-                    <div class="flex items-center justify-between flex-wrap gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
-                                <i data-lucide="cpu" class="w-5 h-5"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-slate-900">AI 클러스터링을 통한 의료 인프라 군집 시각적 비교</h3>
-                        </div>
-                        <div class="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
-                            <span class="text-sm font-semibold text-slate-600 whitespace-nowrap">군집 수: <span id="k-value-display" class="text-purple-600 font-bold">3</span></span>
-                            <input type="range" id="k-slider" min="2" max="6" value="3" class="w-28 accent-purple-600 cursor-pointer">
-                        </div>
-                    </div>
-                    <p class="text-xs text-slate-500">
-                        <b>노약자 비율</b>, <b>인구 10만명당 대형병원수</b>, <b>인구 10만명당 전문의수</b> 특성을 표준화한 후 AI를 활용하여 비슷한 구역끼리 군집화 됩니다.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                    <div class="lg:col-span-7 bg-slate-50/50 rounded-2xl border border-slate-100 p-4 flex flex-col justify-between">
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-700 mb-1">💡 3차원 공간 내 의료 취약도 분포 (노약자비율 x 병원수 x 전문의수)</h4>
-                            <p class="text-[11px] text-slate-400">마우스 드래그를 사용하여 그래프를 회전 및 확대하여 공간 밀도를 가시화할 수 있습니다.</p>
-                        </div>
-                        <div id="chart-3d" class="w-full h-[450px]"></div>
-                    </div>
-
-                    <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
-                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-4 flex-1">
-                            <h4 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-                                <i data-lucide="align-left" class="w-4 h-4 text-purple-600"></i>
-                                분석 군집별 평균 핵심 지표
-                            </h4>
-                            <div class="overflow-x-auto max-h-[160px]">
-                                <table class="w-full text-left text-xs divide-y divide-slate-200">
-                                    <thead>
-                                        <tr class="text-slate-400 font-semibold">
-                                            <th class="pb-2">군집</th>
-                                            <th class="pb-2 text-right">노약자 비율</th>
-                                            <th class="pb-2 text-right">10만명당 대형병원</th>
-                                            <th class="pb-2 text-right">10만명당 전문의</th>
-                                            <th class="pb-2 text-right">포함 구역수</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="cluster-table-body" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-br from-red-50 to-amber-50 border border-red-100 rounded-2xl p-6 space-y-4">
-                            <div class="flex items-center gap-2 text-red-800">
-                                <i data-lucide="shield-alert" class="w-5 h-5"></i>
-                                <span class="font-bold text-sm">종합 분석 리포트</span>
-                            </div>
-                            <div class="space-y-3 text-xs leading-relaxed text-slate-700">
-                                <p class="font-semibold text-slate-900" id="report-risk-status">데이터 분석 중...</p>
-                                <p id="report-description" class="text-slate-600">
-                                    4가지 병합 데이터가 성공적으로 연결되면 취약한 연쇄 보건 위험 지도를 추적하여 정교한 해석 리포트를 발행합니다.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-white border-t border-slate-200 mt-16 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400 space-y-2">
-            <p>© 2026 AI를 통한 대한민국 보건 의료 격차 분석 시스템. MADE BY 임태우</p>
-            <p>본 대시보드는 브라우저 환경에서 동작하여 데이터를 저장하지 않습니다.</p>
-        </div>
-    </footer>
-
-    <script>
-        let parsedPop = [];
-        let parsedDoc = [];
-        let parsedHospG = [];
-        let parsedHospS = [];
-        let finalMergedDataset = [];
-        let latestAnalyzedDataset = [];
-
-        // 정교하게 복원된 오타 없는 데모 데이터셋
-        const demoDataset = [
-            { "시도": "강원특별자치도", "시군구": "고성군", "총인구수": 27204, "고령인구수": 9753, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "강원특별자치도", "시군구": "양양군", "총인구수": 27326, "고령인구수": 10299, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "강원특별자치도", "시군구": "정선군", "총인구수": 35128, "고령인구수": 12956, "대형병원수": 0, "의과전문의수": 12 },
-            { "시도": "강원특별자치도", "시군구": "철원군", "총인구수": 39711, "고령인구수": 12246, "대형병원수": 0, "의과전문의수": 8 },
-            { "시도": "강원특별자치도", "시군구": "평창군", "총인구수": 39897, "고령인구수": 15356, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "강원특별자치도", "시군구": "화천군", "총인구수": 22579, "고령인구수": 6942, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "강원특별자치도", "시군구": "횡성군", "총인구수": 45575, "고령인구수": 18436, "대형병원수": 0, "의과전문의수": 5 },
-            { "시도": "경기도", "시군구": "가평군", "총인구수": 62043, "고령인구수": 18911, "대형병원수": 0, "의과전문의수": 6 },
-            { "시도": "경기도", "시군구": "연천군", "총인구수": 41530, "고령인구수": 12790, "대형병원수": 0, "의과전문의수": 12 },
-            { "시도": "경상남도", "시군구": "고성군", "총인구수": 49455, "고령인구수": 17292, "대형병원수": 0, "의과전문의수": 14 },
-            { "시도": "경상남도", "시군구": "남해군", "총인구수": 40927, "고령인구수": 17094, "대형병원수": 0, "의과전문의수": 10 },
-            { "시도": "경상남도", "시군구": "산청군", "총인구수": 34024, "고령인구수": 14352, "대형병원수": 0, "의과전문의수": 4 },
-            { "시도": "경상남도", "시군구": "의령군", "총인구수": 25752, "고령인구수": 10609, "대형병원수": 0, "의과전문의수": 8 },
-            { "시도": "경상남도", "시군구": "창녕군", "총인구수": 57973, "고령인구수": 20494, "대형병원수": 0, "의과전문의수": 21 },
-            { "시도": "경상남도", "시군구": "하동군", "총인구수": 41838, "고령인구수": 16954, "대형병원수": 0, "의과전문의수": 2 },
-            { "시도": "경상남도", "시군구": "함안군", "총인구수": 60591, "고령인구수": 18274, "대형병원수": 0, "의과전문의수": 14 },
-            { "시도": "경상남도", "시군구": "함양군", "총인구수": 36980, "고령인구수": 13915, "대형병원수": 0, "의과전문의수": 11 },
-            { "시도": "경상남도", "시군구": "합천군", "총인구수": 41005, "고령인구수": 17462, "대형병원수": 0, "의과전문의수": 11 },
-            { "시도": "경상북도", "시군구": "고령군", "총인구수": 30126, "고령인구수": 10834, "대형병원수": 0, "의과전문의수": 1 },
-            { "시도": "경상북도", "시군구": "군위군", "총인구수": 23330, "고령인구수": 10325, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "경상북도", "시군구": "봉화군", "총인구수": 30043, "고령인구수": 12154, "대형병원수": 0, "의과전문의수": 1 },
-            { "시도": "경상북도", "시군구": "성주군", "총인구수": 42513, "고령인구수": 15843, "대형병원수": 0, "의과전문의수": 9 },
-            { "시도": "경상북도", "시군구": "영덕군", "총인구수": 34185, "고령인구수": 14451, "대형병원수": 0, "의과전문의수": 6 },
-            { "시도": "경상북도", "시군구": "영양군", "총인구수": 15946, "고령인구수": 6625, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "경상북도", "시군구": "울릉군", "총인구수": 9052, "고령인구수": 2690, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "경상북도", "시군구": "울진군", "총인구수": 46977, "고령인구수": 14856, "대형병원수": 0, "의과전문의수": 18 },
-            { "시도": "경상북도", "시군구": "청도군", "총인구수": 41496, "고령인구수": 17355, "대형병원수": 0, "의과전문의수": 13 },
-            { "시도": "경상북도", "시군구": "청송군", "총인구수": 24278, "고령인구수": 10118, "대형병원수": 0, "의과전문의수": 3 },
-            { "시도": "경상북도", "시군구": "칠곡군", "총인구수": 111812, "고령인구수": 20438, "대형병원수": 1, "의과전문의수": 85 },
-            { "시도": "대구광역시", "시군구": "달성군", "총인구수": 262335, "고령인구수": 38166, "대형병원수": 0, "의과전문의수": 132 },
-            { "시도": "부산광역시", "시군구": "강서구", "총인구수": 143301, "고령인구수": 16900, "대형병원수": 0, "의과전문의수": 31 },
-            { "시도": "부산광역시", "시군구": "기장군", "총인구수": 177651, "고령인구수": 31441, "대형병원수": 1, "의과전문의수": 114 },
-            { "시도": "울산광역시", "시군구": "울주군", "총인구수": 222152, "고령인구수": 35384, "대형병원수": 0, "의과전문의수": 112 },
-            { "시도": "인천광역시", "시군구": "강화군", "총인구수": 69408, "고령인구수": 25035, "대형병원수": 0, "의과전문의수": 14 },
-            { "시도": "인천광역시", "시군구": "옹진군", "총인구수": 20287, "고령인구수": 6128, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "전라남도", "시군구": "강진군", "총인구수": 32890, "고령인구수": 12108, "대형병원수": 0, "의과전문의수": 10 },
-            { "시도": "전라남도", "시군구": "고흥군", "총인구수": 61405, "고령인구수": 26732, "대형병원수": 0, "의과전문의수": 22 },
-            { "시도": "전라남도", "시군구": "곡성군", "총인구수": 27072, "고령인구수": 10839, "대형병원수": 0, "의과전문의수": 4 },
-            { "시도": "전라남도", "시군구": "구례군", "총인구수": 24874, "고령인구수": 9324, "대형병원수": 0, "의과전문의수": 2 },
-            { "시도": "전라남도", "시군구": "담양군", "총인구수": 45543, "고령인구수": 14896, "대형병원수": 0, "의과전문의수": 17 },
-            { "시도": "전라남도", "시군구": "보성군", "총인구수": 38245, "고령인구수": 15837, "대형병원수": 0, "의과전문의수": 11 },
-            { "시도": "전라남도", "시군구": "신안군", "총인구수": 37882, "고령인구수": 14413, "대형병원수": 0, "의과전문의수": 0 },
-            { "시도": "전라남도", "시군구": "영광군", "총인구수": 51744, "고령인구수": 16183, "대형병원수": 0, "의과전문의수": 21 },
-            { "시도": "전라남도", "시군구": "영암군", "총인구수": 52458, "고령인구수": 14878, "대형병원수": 0, "의과전문의수": 18 },
-            { "시도": "전라남도", "시군구": "완도군", "총인구수": 47250, "고령인구수": 16110, "대형병원수": 0, "의과전문의수": 11 },
-            { "시도": "전라남도", "시군구": "장성군", "총인구수": 42721, "고령인구수": 13735, "대형병원수": 0, "의과전문의수": 14 },
-            { "시도": "전라남도", "시군구": "장흥군", "총인구수": 35324, "고령인구수": 13192, "대형병원수": 0, "의과전문의수": 13 },
-            { "시도": "전라남도", "시군구": "진도군", "총인구수": 29555, "고령인구수": 10471, "대형병원수": 0, "의과전문의수": 3 },
-            { "시도": "전라남도", "시군구": "함평군", "총인구수": 30737, "고령인구수": 11956, "대형병원수": 0, "의과전문의수": 3 },
-            { "시도": "전라남도", "시군구": "해남군", "총인구수": 65545, "고령인구수": 22359, "대형병원수": 0, "의과전문의수": 29 },
-            { "시도": "전라남도", "시군구": "화순군", "총인구수": 61358, "고령인구수": 17290, "대형병원수": 1, "의과전문의수": 225 },
-            { "시도": "전북특별자치도", "시군구": "고창군", "총인구수": 52187, "고령인구수": 18987, "대형병원수": 0, "의과전문의수": 18 },
-            { "시도": "전북특별자치도", "시군구": "무주군", "총인구수": 23371, "고령인구수": 8774, "대형병원수": 0, "의과전문의수": 1 },
-            { "시도": "전북특별자치도", "시군구": "부안군", "총인구수": 49830, "고령인구수": 18567, "대형병원수": 0, "의과전문의수": 19 },
-            { "시도": "전북특별자치도", "시군구": "순창군", "총인구수": 26647, "고령인구수": 10034, "대형병원수": 0, "의과전문의수": 7 },
-            { "시도": "전북특별자치도", "시군구": "완주군", "총인구수": 97412, "고령인구수": 21870, "대형병원수": 0, "의과전문의수": 41 },
-            { "시도": "전북특별자치도", "시군구": "임실군", "총인구수": 26034, "고령인구수": 10321, "대형병원수": 0, "의과전문의수": 3 },
-            { "시도": "전북특별자치도", "시군구": "장수군", "총인구수": 21323, "고령인구수": 8206, "대형병원수": 0, "의과전문의수": 4 },
-            { "시도": "제주특별자치도", "시군구": "서귀포시", "총인구수": 184133, "고령인구수": 38166, "대형병원수": 0, "의과전문의수": 128 },
-            { "시도": "충청남도", "시군구": "금산군", "총인구수": 50091, "고령인구수": 16930, "대형병원수": 0, "의과전문의수": 14 },
-            { "시도": "충청남도", "시군구": "부여군", "총인구수": 62024, "고령인구수": 23516, "대형병원수": 0, "의과전문의수": 23 },
-            { "시도": "충청남도", "시군구": "서천군", "총인구수": 49453, "고령인구수": 19685, "대형병원수": 0, "의과전문의수": 19 },
-            { "시도": "충청남도", "시군구": "예산군", "총인구수": 77134, "고령인구수": 25555, "대형병원수": 1, "의과전문의수": 35 },
-            { "시도": "충청남도", "시군구": "청양군", "총인구수": 30206, "고령인구수": 11776, "대형병원수": 0, "의과전문의수": 4 },
-            { "시도": "충청남도", "시군구": "태안군", "총인구수": 61280, "고령인구수": 20739, "대형병원수": 0, "의과전문의수": 13 },
-            { "시도": "충청북도", "시군구": "괴산군", "총인구수": 37175, "고령인구수": 13955, "대형병원수": 0, "의과전문의수": 6 },
-            { "시도": "충청북도", "시군구": "단양군", "총인구수": 27740, "고령인구수": 9483, "대형병원수": 0, "의과전문의수": 1 },
-            { "시도": "충청북도", "시군구": "보은군", "총인구수": 31441, "고령인구수": 12154, "대형병원수": 0, "의과전문의수": 6 },
-            { "시도": "충청북도", "시군구": "영동군", "총인구수": 44431, "고령인구수": 15412, "대형병원수": 0, "의과전문의수": 8 }
-        ];
-
-        // 초기 바인딩 및 이벤트 설정
-        window.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-            
-            document.getElementById('load-demo-btn').addEventListener('click', loadDemoData);
-            document.getElementById('merge-analyze-btn').addEventListener('click', startAnalysisPipeline);
-            document.getElementById('download-excel-btn').addEventListener('click', exportDatasetToExcel);
-            document.getElementById('k-slider').addEventListener('input', (e) => {
-                document.getElementById('k-value-display').innerText = e.target.value;
-                if (finalMergedDataset.length > 0) runKMeansAndRender(Number(e.target.value));
-            });
-            document.getElementById('sido-filter').addEventListener('change', (e) => {
-                filterAndRenderDashboard(e.target.value);
-            });
-
-            // 파일 체인지 리스너
-            setupFileListener('file-pop', 'status-pop', data => parsedPop = data);
-            setupFileListener('file-doc', 'status-doc', data => parsedDoc = data);
-            setupFileListener('file-general', 'status-general', data => parsedHospG = data);
-            setupFileListener('file-super', 'status-super', data => parsedHospS = data);
-        });
-
-        function setupFileListener(inputId, statusId, callback) {
-            document.getElementById(inputId).addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if(!file) return;
-                document.getElementById(statusId).innerText = "⏳ 읽는 중...";
-                const reader = new FileReader();
-                reader.onload = (evt) => {
-                    try {
-                        const workbook = XLSX.read(evt.target.result, { type: 'binary' });
-                        const firstSheet = workbook.SheetNames[0];
-                        const data = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
-                        callback(data);
-                        document.getElementById(statusId).innerText = `✅ 완료 (${data.length}행)`;
-                        document.getElementById(statusId).className = "text-[10px] text-emerald-600 font-bold text-center";
-                    } catch(err) {
-                        document.getElementById(statusId).innerText = "❌ 오류 발생";
-                        document.getElementById(statusId).className = "text-[10px] text-red-500 font-bold text-center";
-                    }
-                };
-                reader.readAsBinaryString(file);
-            });
-        }
-
-        function loadDemoData() {
-            finalMergedDataset = demoDataset.map(row => {
-                let pop = row.총인구수 || 1;
-                return {
-                    ...row,
-                    노약자_비율_pct: ((row.고령인구수 || 0) / pop) * 100,
-                    인구_10만명당_대형병원수: ((row.대형병원수 || 0) / pop) * 100000,
-                    인구_10만명당_전문의수: ((row.의과전문의수 || 0) / pop) * 100000
-                };
-            });
-            initDashboardComponents();
-        }
-
-        function startAnalysisPipeline() {
-            if(parsedPop.length===0 || parsedDoc.length===0 || parsedHospG.length===0 || parsedHospS.length===0) {
-                alert("4가지 연동 대상 엑셀 파일을 모두 업로드한 뒤 실행해 주세요. 또는 상단의 데모 기능을 이용하세요.");
-                return;
-            }
-            alert("엑셀 융합 및 보건 분석 파이프라인을 가동합니다.");
-            // 엑셀 병합 간소화 매핑 로직 수용
-            finalMergedDataset = parsedPop.map(p => {
-                let sido = p["시도"] || p["시도명"] || "";
-                let sigungu = p["시군구"] || p["시군구명"] || "";
-                let pop = Number(p["총인구수"] || p["인구수"] || 1);
-                let elderly = Number(p["고령인구수"] || p["65세이상인구수"] || p["고령인구"] || 0);
-                
-                let docRow = parsedDoc.find(d => (d["시도"]===sido || d["시도명"]===sido) && (d["시군구"]===sigungu || d["시군구명"]===sigungu)) || {};
-                let docCount = Number(docRow["의과전문의수"] || docRow["전문의수"] || docRow["전문의"] || 0);
-
-                let gHosp = parsedHospG.filter(h => (h["시도"]===sido || h["시도명"]===sido) && (h["시군구"]===sigungu || h["시군구명"]===sigungu)).length;
-                let sHosp = parsedHospS.filter(h => (h["시도"]===sido || h["시도명"]===sido) && (h["시군구"]===sigungu || h["시군구명"]===sigungu)).length;
-                let totalHosp = gHosp + sHosp;
-
-                return {
-                    "시도": sido,
-                    "시군구": sigungu,
-                    "총인구수": pop,
-                    "고령인구수": elderly,
-                    "대형병원수": totalHosp,
-                    "의과전문의수": docCount,
-                    "노약자_비율_pct": (elderly / pop) * 100,
-                    "인구_10만명당_대형병원수": (totalHosp / pop) * 100000,
-                    "인구_10만명당_전문의수": (docCount / pop) * 100000
-                };
-            }).filter(r => r.시도 !== "");
-
-            initDashboardComponents();
-        }
-
-        function initDashboardComponents() {
-            document.getElementById('dashboard-content').classList.remove('hidden');
-            
-            // 시도 필터 세팅
-            const filterSelect = document.getElementById('sido-filter');
-            filterSelect.innerHTML = '<option value="전체">전체 지역보기</option>';
-            const sidos = [...new Set(finalMergedDataset.map(r => r.시도))].sort();
-            sidos.forEach(s => {
-                filterSelect.innerHTML += `<option value="${s}">${s}</option>`;
-            });
-
-            filterAndRenderDashboard("전체");
-        }
-
-        function filterAndRenderDashboard(targetSido) {
-            let filtered = finalMergedDataset;
-            if(targetSido !== "전체") {
-                filtered = finalMergedDataset.filter(r => r.시도 === targetSido);
-            }
-            latestAnalyzedDataset = filtered;
-
-            // KPI 연산
-            let totalPop = filtered.reduce((a, b) => a + b.총인구수, 0);
-            let totalElderly = filtered.reduce((a, b) => a + b.고령인구수, 0);
-            let avgPct = filtered.length > 0 ? (filtered.reduce((a, b) => a + b.노약자_비율_pct, 0) / filtered.length) : 0;
-            let noHospPlaces = filtered.filter(r => r.대형병원수 === 0);
-
-            document.getElementById('kpi-total-pop').innerText = totalPop.toLocaleString() + " 명";
-            document.getElementById('kpi-total-elderly').innerText = totalElderly.toLocaleString() + " 명";
-            document.getElementById('kpi-avg-elderly-pct').innerText = avgPct.toFixed(2) + " %";
-            document.getElementById('kpi-no-hosp-count').innerText = noHospPlaces.length + " 곳";
-
-            // 위험지역 태그 출력
-            const alertBox = document.getElementById('no-hospital-alert-box');
-            const listContainer = document.getElementById('no-hospital-list-container');
-            if(noHospPlaces.length > 0) {
-                alertBox.classList.remove('hidden');
-                listContainer.innerHTML = "";
-                noHospPlaces.forEach(p => {
-                    listContainer.innerHTML += `<span class="bg-red-200/60 text-red-900 border border-red-300 text-[11px] font-semibold px-2 py-0.5 rounded-md">${p.시도} ${p.시군구}</span>`;
-                });
-            } else {
-                alertBox.classList.add('hidden');
-            }
-
-            // 차트 드로잉
-            renderTopBottomCharts(filtered);
-            
-            // 머신러닝 연동 실행
-            const k = Number(document.getElementById('k-slider').value);
-            runKMeansAndRender(k);
-        }
-
-        function renderTopBottomCharts(data) {
-            if(data.length === 0) return;
-            
-            let sortedHosp = [...data].sort((a,b) => b.인구_10만명당_대형병원수 - a.인구_10만명당_대형병원수);
-            let sortedDoc = [...data].sort((a,b) => b.인구_10만명당_전문의수 - a.인구_10만명당_전문의수);
-
-            let topBottomHosp = sortedHosp.slice(0, 5).concat(sortedHosp.slice(-5));
-            let topBottomDoc = sortedDoc.slice(0, 5).concat(sortedDoc.slice(-5));
-            // 중복제거(데이터가 10개 미만일 때 대응)
-            topBottomHosp = [...new Set(topBottomHosp)];
-            topBottomDoc = [...new Set(topBottomDoc)];
-
-            const traceHosp = {
-                x: topBottomHosp.map(r => `${r.시도.slice(0,2)} ${r.시군구}`),
-                y: topBottomHosp.map(r => r.인구_10만명당_대형병원수),
-                type: 'bar',
-                marker: { color: '#f43f5e' }
-            };
-
-            const traceDoc = {
-                x: topBottomDoc.map(r => `${r.시도.slice(0,2)} ${r.시군구}`),
-                y: topBottomDoc.map(r => r.인구_10만명당_전문의수),
-                type: 'bar',
-                marker: { color: '#06b6d4' }
-            };
-
-            const layout = { margin: { t: 20, b: 60, l: 40, r: 20 }, font: { size: 10 } };
-            Plotly.newPlot('chart-hosp', [traceHosp], layout);
-            Plotly.newPlot('chart-doc', [traceDoc], layout);
-        }
-
-        // 의사 K-Means 머신러닝 모듈 (외부 라이브러리 연동 리스크 제거를 위해 순수 연산 구현)
-        function runKMeansAndRender(k) {
-            let data = latestAnalyzedDataset;
-            if(data.length === 0) return;
-
-            // 1. 특성 추출 및 Z-score 표준화 준비
-            let features = data.map(r => [r.노약자_비율_pct, r.인구_10만명당_대형병원수, r.인구_10만명당_전문의수]);
-            
-            // 평균 및 표준편차 연산
-            let means = [0, 0, 0];
-            let stds = [0, 0, 0];
-            for(let j=0; j<3; j++) {
-                let sum = features.reduce((a, b) => a + b[j], 0);
-                means[j] = sum / features.length;
-                let sqSum = features.reduce((a, b) => a + Math.pow(b[j] - means[j], 2), 0);
-                stds[j] = Math.sqrt(sqSum / features.length) || 1;
-            }
-
-            // 표준화된 스케일 데이터 생성
-            let scaled = features.map(f => [
-                (f[0] - means[0]) / stds[0],
-                (f[1] - means[1]) / stds[1],
-                (f[2] - means[2]) / stds[2]
-            ]);
-
-            // Centroids 초기화 (단순 분할 선택)
-            let centroids = [];
-            for(let i=0; i<k; i++) {
-                let idx = Math.floor((i / k) * scaled.length);
-                centroids.push([...scaled[idx]]);
-            }
-
-            let assignments = new Array(scaled.length).fill(0);
-            
-            // K-Means 루프 (최대 10회 반복)
-            for(let iter=0; iter<10; iter++) {
-                // 클러스터 할당
-                for(let i=0; i<scaled.length; i++) {
-                    let minDist = Infinity;
-                    let bestCluster = 0;
-                    for(let c=0; c<k; c++) {
-                        let dist = Math.pow(scaled[i][0]-centroids[c][0], 2) +
-                                   Math.pow(scaled[i][1]-centroids[c][1], 2) +
-                                   Math.pow(scaled[i][2]-centroids[c][2], 2);
-                        if(dist < minDist) {
-                            minDist = dist;
-                            bestCluster = c;
-                        }
-                    }
-                    assignments[i] = bestCluster;
-                }
-
-                // Centroids 재계산
-                let newCentroids = Array.from({length: k}, () => [0,0,0]);
-                let counts = new Array(k).fill(0);
-                for(let i=0; i<scaled.length; i++) {
-                    let c = assignments[i];
-                    newCentroids[c][0] += scaled[i][0];
-                    newCentroids[c][1] += scaled[i][1];
-                    newCentroids[c][2] += scaled[i][2];
-                    counts[c]++;
-                }
-                for(let c=0; c<k; c++) {
-                    if(counts[c] > 0) {
-                        centroids[c][0] = newCentroids[c][0] / counts[c];
-                        centroids[c][1] = newCentroids[c][1] / counts[c];
-                        centroids[c][2] = newCentroids[c][2] / counts[c];
-                    }
-                }
-            }
-
-            // 결과 데이터 바인딩
-            data.forEach((r, idx) => {
-                r.clusterId = assignments[idx] + 1; // 1부터 시작하게 매핑
-            });
-
-            // 테이블 뷰 갱신
-            renderMergedTable(data);
-            // 3D 스캐터 플롯 출력
-            render3DScatter(data, k);
-            // 군집 레포트 카드 출력
-            renderClusterSummaryAndReport(data, k);
-        }
-
-        function renderMergedTable(data) {
-            document.getElementById('data-count-badge').innerText = data.length;
-            const tbody = document.getElementById('merged-table-body');
-            tbody.innerHTML = "";
-            
-            const clusterColors = ["bg-purple-100 text-purple-800", "bg-cyan-100 text-cyan-800", "bg-amber-100 text-amber-800", "bg-emerald-100 text-emerald-800", "bg-rose-100 text-rose-800", "bg-indigo-100 text-indigo-800"];
-
-            data.forEach(r => {
-                let cColor = clusterColors[(r.clusterId - 1) % clusterColors.length];
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3 border-b border-slate-100 font-medium">${r.시도}</td>
-                        <td class="p-3 border-b border-slate-100">${r.시군구}</td>
-                        <td class="p-3 border-b border-slate-100 text-right">${r.총인구수.toLocaleString()}</td>
-                        <td class="p-3 border-b border-slate-100 text-right">${r.고령인구수.toLocaleString()}</td>
-                        <td class="p-3 border-b border-slate-100 text-right font-semibold text-slate-600">${r.노약자_비율_pct.toFixed(2)}%</td>
-                        <td class="p-3 border-b border-slate-100 text-right">${r.대형병원수}</td>
-                        <td class="p-3 border-b border-slate-100 text-right">${r.의과전문의수.toLocaleString()}</td>
-                        <td class="p-3 border-b border-slate-100 text-right text-rose-600 font-semibold">${r.인구_10만명당_대형병원수.toFixed(2)}</td>
-                        <td class="p-3 border-b border-slate-100 text-right text-cyan-600 font-semibold">${r.인구_10만명당_전문의수.toFixed(2)}</td>
-                        <td class="p-3 border-b border-slate-100 text-center">
-                            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${cColor}">군집 ${r.clusterId}</span>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        function render3DScatter(data, k) {
-            const colors = ['#9333ea', '#06b6d4', '#f59e0b', '#10b981', '#f43f5e', '#4f46e5'];
-            let traces = [];
-
-            for(let c=1; c<=k; c++) {
-                let cData = data.filter(r => r.clusterId === c);
-                if(cData.length === 0) continue;
-
-                traces.push({
-                    x: cData.map(r => r.노약자_비율_pct),
-                    y: cData.map(r => r.인구_10만명당_대형병원수),
-                    z: cData.map(r => r.인구_10만명당_전문의수),
-                    mode: 'markers',
-                    name: `군집 ${c}`,
-                    text: cData.map(r => `${r.시도} ${r.시군구}`),
-                    marker: {
-                        size: 6,
-                        color: colors[(c-1) % colors.length],
-                        opacity: 0.8
-                    },
-                    type: 'scatter3d'
-                });
-            }
-
-            const layout = {
-                scene: {
-                    xaxis: {title: '노약자 비율 (%)', titlefont: {size: 10}},
-                    yaxis: {title: '10만명당 병원수', titlefont: {size: 10}},
-                    zaxis: {title: '10만명당 전문의수', titlefont: {size: 10}}
-                },
-                margin: {l:0, r:0, b:0, t:0},
-                legend: {orientation: 'h', y: 0.1}
-            };
-
-            Plotly.newPlot('chart-3d', traces, layout);
-        }
-
-        function renderClusterSummaryAndReport(data, k) {
-            const tbody = document.getElementById('cluster-table-body');
-            tbody.innerHTML = "";
-
-            let clusterSummaries = [];
-
-            for(let c=1; c<=k; c++) {
-                let cData = data.filter(r => r.clusterId === c);
-                if(cData.length === 0) continue;
-
-                let avgElderly = cData.reduce((a,b)=>a+b.노약자_비율_pct,0)/cData.length;
-                let avgHosp = cData.reduce((a,b)=>a+b.인구_10만명당_대형병원수,0)/cData.length;
-                let avgDoc = cData.reduce((a,b)=>a+b.인구_10만명당_전문의수,0)/cData.length;
-
-                clusterSummaries.push({ cId: c, avgElderly, avgHosp, avgDoc, count: cData.length });
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="py-2 font-bold text-purple-700">군집 ${c}</td>
-                        <td class="py-2 text-right">${avgElderly.toFixed(2)} %</td>
-                        <td class="py-2 text-right text-rose-600">${avgHosp.toFixed(2)}</td>
-                        <td class="py-2 text-right text-cyan-600">${avgDoc.toFixed(2)}</td>
-                        <td class="py-2 text-right font-bold text-slate-900">${cData.length} 곳</td>
-                    </tr>
-                `;
-            }
-
-            // 위험군 파악 및 리포트 자동 작성
-            // 가장 대형병원수가 적고 노약자 비율이 높은 군집 추적
-            let criticalCluster = [...clusterSummaries].sort((a,b) => (a.avgHosp + a.avgDoc*0.01) - (b.avgHosp + b.avgDoc*0.01))[0];
-            
-            if(criticalCluster) {
-                document.getElementById('report-risk-status').innerText = `⚠️ 의료 격차 정밀 모니터링 경보: [군집 ${criticalCluster.cId}] 요주의`;
-                document.getElementById('report-description').innerHTML = `
-                    현재 데이터 분석 결과, <b>군집 ${criticalCluster.cId}</b>에 속한 ${criticalCluster.count}개 지역은 평균 노약자 비율이 <b>${criticalCluster.avgElderly.toFixed(2)}%</b>로 초고령화 위험에 노출되어 있으나, 인구 10만 명당 대형병원수(<b>${criticalCluster.avgHosp.toFixed(2)}개</b>) 및 전문의 인프라가 극도로 제한되어 보건 격차 지수가 가장 취약한 배후지로 분석되었습니다. 원격 의료 인프라 확충 및 거점 공공의료 지원이 시급합니다.
-                `;
-            }
-        }
-
-        function toggleAccordion(panelId) {
-            const panel = document.getElementById(panelId);
-            const icon = document.getElementById('accordion-icon');
-            if(panel.classList.contains('hidden')) {
-                panel.classList.remove('hidden');
-                icon.style.transform = "rotate(180deg)";
-            } else {
-                panel.classList.add('hidden');
-                icon.style.transform = "rotate(0deg)";
-            }
-        }
-
-        function exportDatasetToExcel() {
-            if (latestAnalyzedDataset.length === 0) {
-                alert("다운로드할 데이터가 아직 준비되지 않았습니다. 파일을 연동하거나 데모 데이터를 적용해 주세요.");
-                return;
-            }
-
-            try {
-                const excelRows = latestAnalyzedDataset.map(row => ({
-                    "시도": row.시도,
-                    "시군구": row.시군구,
-                    "총인구수": row.총인구수,
-                    "고령인구수": row.고령인구수,
-                    "노약자 비율 (%)": Number(row.노약자_비율_pct.toFixed(2)),
-                    "대형병원수 (종합+상급)": row.대형병원수,
-                    "의과전문의수": row.의과전문의수,
-                    "인구 10만명당 대형병원수": Number(row.인구_10만명당_대형병원수.toFixed(2)),
-                    "인구 10만명당 전문의수": Number(row.인구_10만명당_전문의수.toFixed(2)),
-                    "AI 연산 소속군집": row.clusterId ? `군집 ${row.clusterId}` : "미분류"
-                }));
-
-                const worksheet = XLSX.utils.json_to_sheet(excelRows);
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, "보건의료 격차 분석데이터");
-                XLSX.writeFile(workbook, "AI_보건의료_격차_분석결과.xlsx");
-            } catch (err) {
-                alert("엑셀 다운로드 중 오류가 발생했습니다: " + err.message);
-            }
-        }
-    </script>
-</body>
-</html>
+                                <th class="p-3 border-b border-slate-200 text-right">
