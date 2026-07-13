@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대한민국 4대 데이터 융합 의료 인프라 분석 플랫폼</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
@@ -23,55 +24,76 @@
         <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm space-y-6">
             <div class="border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-bold text-slate-900">분석용 데이터 파일 업로드</h2>
-                <p class="text-xs text-slate-500 mt-1">지정된 이름의 데이터 파일을 각 영역에 업로드하여 분석을 시작하세요.</p>
+                <p class="text-xs text-slate-500 mt-1">파일을 선택하면 자동으로 데이터를 분석 모드로 가져옵니다.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- 파일 1 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-1">
                     <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">데이터 1</span>
                     <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">1. 인구 데이터.xlsx</h4>
                     <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-blue-500">
                         파일 선택
-                        <input type="file" class="hidden" accept=".xlsx" />
+                        <input type="file" class="hidden file-input" data-id="1" accept=".xlsx" />
                     </label>
                 </div>
 
                 <!-- 파일 2 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-2">
                     <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">데이터 2</span>
                     <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">2. 전문의 데이터.xlsx</h4>
                     <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-emerald-500">
                         파일 선택
-                        <input type="file" class="hidden" accept=".xlsx" />
+                        <input type="file" class="hidden file-input" data-id="2" accept=".xlsx" />
                     </label>
                 </div>
 
                 <!-- 파일 3 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-3">
                     <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">데이터 3</span>
                     <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">3. 종합병원 수.xlsx</h4>
                     <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-purple-500">
                         파일 선택
-                        <input type="file" class="hidden" accept=".xlsx" />
+                        <input type="file" class="hidden file-input" data-id="3" accept=".xlsx" />
                     </label>
                 </div>
 
                 <!-- 파일 4 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-4">
                     <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded">데이터 4</span>
                     <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">4. 상급종합병원 수.xlsx</h4>
                     <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-rose-500">
                         파일 선택
-                        <input type="file" class="hidden" accept=".xlsx" />
+                        <input type="file" class="hidden file-input" data-id="4" accept=".xlsx" />
                     </label>
                 </div>
             </div>
+            <div id="status-msg" class="text-sm font-semibold text-slate-600 text-center py-2"></div>
         </div>
     </main>
 
     <script>
         lucide.createIcons();
+
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    document.getElementById('status-msg').innerText = `성공: '${file.name}' 데이터를 불러왔습니다. (${jsonData.length}행)`;
+                    console.log(jsonData); // 개발자 도구(F12)에서 확인 가능
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        });
     </script>
 </body>
 </html>
