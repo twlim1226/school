@@ -4,96 +4,1077 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대한민국 4대 데이터 융합 의료 인프라 분석 플랫폼</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SheetJS (Excel parser & writer) CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Plotly.js for interactive charts & 3D Plot -->
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
-        body { font-family: 'Pretendard', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght=400;600;700;800&display=swap');
+        body {
+            font-family: 'Pretendard', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
 
+    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <h1 class="text-xl font-bold text-slate-900">4대 융합 의료 인프라 통합 분석 플랫폼</h1>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20">
+                    <i data-lucide="activity" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900">4대 융합 의료 인프라 통합 분석 플랫폼</h1>
+                    <p class="text-xs text-slate-500">인구 · 전문의 · 종합병원 · 상급종합병원 실시간 엑셀 연계 진단 시스템</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="load-demo-btn" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-md transition">
+                    <i data-lucide="play" class="w-4 h-4"></i>
+                    데모 데이터 자동 가동하기
+                </button>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm space-y-6">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- File Upload Section -->
+        <div id="upload-panel" class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
             <div class="border-b border-slate-100 pb-4">
-                <h2 class="text-lg font-bold text-slate-900">분석용 데이터 파일 업로드</h2>
-                <p class="text-xs text-slate-500 mt-1">파일을 선택하면 자동으로 데이터를 분석 모드로 가져옵니다.</p>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="file-up" class="text-blue-600"></i>
+                    원본 엑셀 데이터 업로드
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">다운로드 받으신 4가지 분석 대상 원본 엑셀 파일(.xlsx)을 별도 변환 없이 그대로 선택해 주세요.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- 파일 1 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-1">
-                    <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">데이터 1</span>
-                    <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">1. 인구 데이터.xlsx</h4>
-                    <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-blue-500">
-                        파일 선택
-                        <input type="file" class="hidden file-input" data-id="1" accept=".xlsx" />
+                <!-- File 1: Population -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">1. 인구 데이터</span>
+                        <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">1.인구 데이터.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">주민등록인구기타현황(고령 인구현황) 분석용</p>
+                    </div>
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-blue-500 text-slate-600 hover:text-blue-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        엑셀 파일 업로드
+                        <input type="file" id="file-pop" class="hidden" accept=".xlsx" />
                     </label>
+                    <div id="status-pop" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
                 </div>
 
-                <!-- 파일 2 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-2">
-                    <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">데이터 2</span>
-                    <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">2. 전문의 데이터.xlsx</h4>
-                    <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-emerald-500">
-                        파일 선택
-                        <input type="file" class="hidden file-input" data-id="2" accept=".xlsx" />
+                <!-- File 2: Doctor -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">2. 전문의 데이터</span>
+                        <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">2.전문의 데이터.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">hospBasisList 의과전문의 수 지역 매핑용</p>
+                    </div>
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-emerald-500 text-slate-600 hover:text-emerald-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        엑셀 파일 업로드
+                        <input type="file" id="file-doc" class="hidden" accept=".xlsx" />
                     </label>
+                    <div id="status-doc" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
                 </div>
 
-                <!-- 파일 3 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-3">
-                    <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">데이터 3</span>
-                    <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">3. 종합병원 수.xlsx</h4>
-                    <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-purple-500">
-                        파일 선택
-                        <input type="file" class="hidden file-input" data-id="3" accept=".xlsx" />
+                <!-- File 3: General Hospital -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">3. 종합병원 수</span>
+                        <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">3.종합병원 수.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">종합병원 유무 및 설립구분별 수량</p>
+                    </div>
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-purple-500 text-slate-600 hover:text-purple-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        엑셀 파일 업로드
+                        <input type="file" id="file-general" class="hidden" accept=".xlsx" />
                     </label>
+                    <div id="status-general" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
                 </div>
 
-                <!-- 파일 4 -->
-                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50" id="card-4">
-                    <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded">데이터 4</span>
-                    <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">4. 상급종합병원 수.xlsx</h4>
-                    <label class="block w-full mt-3 text-center bg-white border border-slate-300 py-1.5 rounded-lg text-xs cursor-pointer hover:border-rose-500">
-                        파일 선택
-                        <input type="file" class="hidden file-input" data-id="4" accept=".xlsx" />
+                <!-- File 4: Super Hospital -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded">4. 상급종합병원 수</span>
+                        <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">4.상급종합병원 수.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">상급대학병원 및 3차 진료기관 현황</p>
+                    </div>
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-rose-500 text-slate-600 hover:text-rose-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        엑셀 파일 업로드
+                        <input type="file" id="file-super" class="hidden" accept=".xlsx" />
                     </label>
+                    <div id="status-super" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
                 </div>
             </div>
-            <div id="status-msg" class="text-sm font-semibold text-slate-600 text-center py-2"></div>
+
+            <!-- Merge Run Button -->
+            <div class="flex justify-end pt-2 border-t border-slate-100">
+                <button id="merge-analyze-btn" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/10 transition">
+                    <i data-lucide="merge"></i>
+                    업로드 데이터 실시간 융합 및 분석 시작
+                </button>
+            </div>
         </div>
+
+        <!-- Dashboard Content Area (Hidden by default) -->
+        <div id="dashboard-content" class="hidden space-y-8 animate-fade-in">
+            
+            <!-- KPI Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- KPI 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
+                    <div class="p-4 bg-blue-50 text-blue-600 rounded-xl">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">전국 분석 총인구</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-total-pop">0명</h3>
+                    </div>
+                </div>
+                <!-- KPI 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
+                    <div class="p-4 bg-indigo-50 text-indigo-600 rounded-xl">
+                        <i data-lucide="contact" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">65세 이상 고령인구</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-total-elderly">0명</h3>
+                    </div>
+                </div>
+                <!-- KPI 3 -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
+                    <div class="p-4 bg-emerald-50 text-emerald-600 rounded-xl">
+                        <i data-lucide="percentage" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">평균 노약자 비율</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-avg-elderly-pct">0.00 %</h3>
+                    </div>
+                </div>
+                <!-- KPI 4 -->
+                <div class="bg-red-50 rounded-2xl border border-red-200 p-6 flex items-center gap-4 shadow-sm">
+                    <div class="p-4 bg-red-100 text-red-600 rounded-xl">
+                        <i data-lucide="alert-octagon" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-red-700 uppercase tracking-wider">대형병원 전무 시군구</p>
+                        <h3 class="text-2xl font-bold text-red-900 mt-1" id="kpi-no-hosp-count">0 곳</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Alert List for No Hospital Sigungu -->
+            <div id="no-hospital-alert-box" class="bg-red-50 border border-red-100 rounded-2xl p-6 hidden">
+                <div class="flex items-start gap-3">
+                    <div class="p-1.5 bg-red-100 text-red-700 rounded-lg">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                    </div>
+                    <div class="space-y-2 w-full">
+                        <h4 class="font-bold text-red-900 text-sm">🚨 대형병원(종합병원/상급종합병원)이 단 1개도 없는 의료 취약지</h4>
+                        <p class="text-xs text-red-700">관할 내에 필수 응급/중증 관리를 책임질 2차, 3차 병원이 전무하여 대진료권 이동이 강제되는 긴급 케어 소외지입니다.</p>
+                        <div id="no-hospital-list-container" class="flex flex-wrap gap-2 pt-1">
+                            <!-- Dynamic tags -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pivot/Merged Interactive Table Preview & Download -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-slate-50 border-b border-slate-200 gap-4">
+                    <button onclick="toggleAccordion('merged-data-panel')" class="flex items-center gap-2 font-semibold text-slate-700 focus:outline-none">
+                        <i data-lucide="shuffle" class="w-5 h-5 text-blue-600"></i>
+                        📊 4종 파일 실시간 융합 통합 분석 데이터셋 (<span id="data-count-badge">0</span>개 구역 매핑완료)
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transform transition-transform ml-1" id="accordion-icon"></i>
+                    </button>
+                    <!-- Excel Download Button -->
+                    <button id="download-excel-btn" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition whitespace-nowrap">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        융합 데이터 엑셀(.xlsx) 다운로드
+                    </button>
+                </div>
+                <div id="merged-data-panel" class="hidden max-h-[400px] overflow-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100/50 text-slate-600 text-xs uppercase font-semibold sticky top-0 bg-white shadow-sm z-10">
+                                <th class="p-3 border-b border-slate-200">시도</th>
+                                <th class="p-3 border-b border-slate-200">시군구</th>
+                                <th class="p-3 border-b border-slate-200 text-right">총인구수</th>
+                                <th class="p-3 border-b border-slate-200 text-right">고령인구수</th>
+                                <th class="p-3 border-b border-slate-200 text-right">노약자 비율 (%)</th>
+                                <th class="p-3 border-b border-slate-200 text-right">대형병원수 (종합+상급)</th>
+                                <th class="p-3 border-b border-slate-200 text-right">의과전문의수</th>
+                                <th class="p-3 border-b border-slate-200 text-right">10만명당 대형병원</th>
+                                <th class="p-3 border-b border-slate-200 text-right">10만명당 전문의</th>
+                                <th class="p-3 border-b border-slate-200 text-center">소속 군집</th>
+                            </tr>
+                        </thead>
+                        <tbody id="merged-table-body" class="text-sm divide-y divide-slate-100">
+                            <!-- Injected by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Interactive Sido Region Filtering and Visualization Comparison -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                            <i data-lucide="search-code" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">🗺️ 지역별 대시보드 및 상세 교차 분석</h3>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <label for="sido-filter" class="text-sm font-semibold text-slate-500 whitespace-nowrap">시도 필터:</label>
+                        <select id="sido-filter" class="w-full sm:w-56 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="전체">전체 지역보기</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Visualization charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                        <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                            인구 10만명당 대형병원수 비교 (Top 5 / Bottom 5)
+                        </h4>
+                        <div id="chart-hosp" class="w-full h-80"></div>
+                    </div>
+                    <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                        <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
+                            인구 10만명당 전문의수 비교 (Top 5 / Bottom 5)
+                        </h4>
+                        <div id="chart-doc" class="w-full h-80"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ML Clustering Panel (K-Means) -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-5 space-y-2">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                                <i data-lucide="cpu" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900">🤖 AI 클러스터링 의료 인프라 군집 기하학 진단</h3>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+                            <span class="text-sm font-semibold text-slate-600 whitespace-nowrap">군집 수 (K): <span id="k-value-display" class="text-purple-600 font-bold">3</span></span>
+                            <input type="range" id="k-slider" min="2" max="6" value="3" class="w-28 accent-purple-600 cursor-pointer">
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500">
+                        <b>노약자_비율_pct</b>, <b>인구_10만명당_대형병원수</b>, <b>인구_10만명당_전문의수</b> 특성을 표준화한 후 K-Means 알고리즘을 브라우저 로컬에서 즉시 계산합니다.
+                    </p>
+                </div>
+
+                <!-- 3D Plot & Summary Report Box -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    <!-- 3D Visualization -->
+                    <div class="lg:col-span-7 bg-slate-50/50 rounded-2xl border border-slate-100 p-4 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-700 mb-1">💡 3차원 공간 내 의료 취약도 분포 (노약자비율 x 병원수 x 전문의수)</h4>
+                            <p class="text-[11px] text-slate-400">마우스 드래그를 사용하여 그래프를 회전 및 확대하여 공간 밀도를 가시화할 수 있습니다.</p>
+                        </div>
+                        <div id="chart-3d" class="w-full h-[450px]"></div>
+                    </div>
+
+                    <!-- Report Output Area -->
+                    <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+                        <!-- Cluster Metric Grid -->
+                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-4 flex-1">
+                            <h4 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                                <i data-lucide="align-left" class="w-4 h-4 text-purple-600"></i>
+                                분석 군집별 평균 핵심 지표 테이블
+                            </h4>
+                            <div class="overflow-x-auto max-h-[160px]">
+                                <table class="w-full text-left text-xs divide-y divide-slate-200">
+                                    <thead>
+                                        <tr class="text-slate-400 font-semibold">
+                                            <th class="pb-2">군집</th>
+                                            <th class="pb-2 text-right">노약자 비율</th>
+                                            <th class="pb-2 text-right">10만명당 대형병원</th>
+                                            <th class="pb-2 text-right">10만명당 전문의</th>
+                                            <th class="pb-2 text-right">포함 구역수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cluster-table-body" class="divide-y divide-slate-100 font-medium text-slate-700">
+                                        <!-- JS injection -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Automatically Created Report -->
+                        <div class="bg-gradient-to-br from-red-50 to-amber-50 border border-red-100 rounded-2xl p-6 space-y-4">
+                            <div class="flex items-center gap-2 text-red-800">
+                                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                                <span class="font-bold text-sm">종합 기계학습 분석 리포트</span>
+                            </div>
+                            <div class="space-y-3 text-xs leading-relaxed text-slate-700">
+                                <p class="font-semibold text-slate-900" id="report-risk-status">
+                                    데이터 분석 중...
+                                </p>
+                                <p id="report-description" class="text-slate-600">
+                                    4가지 병합 데이터가 성공적으로 연결되면 취약한 연쇄 보건 위험 지도를 추적하여 정교한 해석 리포트를 발행합니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </main>
 
-    <script>
-        lucide.createIcons();
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400 space-y-2">
+            <p>© 2026 대한민국 의료 인프라 통합 분석 모니터링 시스템.</p>
+            <p>본 대시보드는 100% Client-Side 브라우저 환경에서 동작하여 데이터 정보 유출 방지에 완벽히 기여하고 안전합니다.</p>
+        </div>
+    </footer>
 
-        document.querySelectorAll('.file-input').forEach(input => {
-            input.addEventListener('change', function(e) {
+    <script>
+        // Global variables storing parsed datasets
+        let parsedPop = [];
+        let parsedDoc = [];
+        let parsedHospG = [];
+        let parsedHospS = [];
+
+        let finalMergedDataset = [];
+        let latestAnalyzedDataset = []; // Store dataset including active cluster assignments for export
+
+        // Realistic Demo Data (when clicking "데모 데이터 자동 가동하기")
+        const demoDataset = [
+            {"시도":"서울특별시","시군구":"종로구","총인구수":151290,"고령인구수":28090,"대형병원수":4,"의과전문의수":620},
+            {"시도":"서울특별시","시군구":"강남구","총인구수":542300,"고령인구수":82300,"대형병원수":6,"의과전문의수":1420},
+            {"시도":"서울특별시","시군구":"영등포구","총인구수":378000,"고령인구수":63000,"대형병원수":5,"의과전문의수":890},
+            {"시도":"강원특별자치도","시군구":"원주시","총인구수":364811,"고령인구수":76544,"대형병원수":2,"의과전문의수":245},
+            {"시도":"강원특별자치도","시군구":"강릉시","총인구수":205666,"고령인구수":58369,"대형병원수":3,"의과전문의수":150},
+            {"시도":"강원특별자치도","시군구":"정선군","총인구수":35128,"고령인구수":12956,"대형병원수":0,"의과전문의수":15},
+            {"시도":"강원특별자치도","시군구":"고성군","총인구수":27204,"고령인구수":9753,"대형병원수":0,"의과전문의수":8},
+            {"시도":"경기도","시군구":"수원시","총인구수":1190000,"고령인구수":145000,"대형병원수":7,"//정보":"종합병원 7","의과전문의수":1130},
+            {"시도":"경기도","시군구":"가평군","총인구수":63000,"고령인구수":17000,"대형병원수":0,"의과전문의수":24},
+            {"시도":"경상북도","시군구":"의성군","총인구수":50000,"고령인구수":21500,"대형병원수":0,"의과전문의수":16},
+            {"시도":"경상북도","시군구":"울릉군","총인구수":9000,"고령인구수":2500,"대형병원수":0,"의과전문의수":3},
+            {"시도":"전북특별자치도","시군구":"전주시","총인구수":620874,"고령인구수":126989,"대형병원수":6,"의과전문의수":580},
+            {"시도":"전북특별자치도","시군구":"무주군","총인구수":23326,"고령인구수":9356,"대형병원수":0,"의과전문의수":12},
+            {"시도":"전라남도","시군구":"고흥군","총인구수":62000,"고령인구수":26000,"대형병원수":0,"의과전문의수":18},
+            {"시도":"제주특별자치도","시군구":"제주시","총인구수":490000,"고령인구수":76000,"대형병원수":6,"의과전문의수":380},
+            {"시도":"제주특별자치도","시군구":"서귀포시","총인구수":180000,"고령인구수":38000,"대형병원수":1,"의과전문의수":95}
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            
+            // Excel-native File Input Triggers
+            setupFileInput('file-pop', 'status-pop', data => parsedPop = data);
+            setupFileInput('file-doc', 'status-doc', data => parsedDoc = data);
+            setupFileInput('file-general', 'status-general', data => parsedHospG = data);
+            setupFileInput('file-super', 'status-super', data => parsedHospS = data);
+
+            // Control triggers
+            document.getElementById('merge-analyze-btn').addEventListener('click', runMergeProcess);
+            document.getElementById('load-demo-btn').addEventListener('click', runDemoProcess);
+
+            // Download Trigger
+            document.getElementById('download-excel-btn').addEventListener('click', exportDatasetToExcel);
+
+            // Interactive controls
+            document.getElementById('sido-filter').addEventListener('change', applyFiltersAndCharts);
+            document.getElementById('k-slider').addEventListener('input', handleKSliderChange);
+        });
+
+        // Toggle Accordion Panel
+        function toggleAccordion(panelId) {
+            const panel = document.getElementById(panelId);
+            const icon = document.getElementById('accordion-icon');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                panel.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Generic Excel File Reader Helper
+        function setupFileInput(inputId, statusId, callback) {
+            const el = document.getElementById(inputId);
+            const statusEl = document.getElementById(statusId);
+            
+            el.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
 
+                statusEl.textContent = "엑셀 읽는 중...";
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, {type: 'array'});
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                    
-                    document.getElementById('status-msg').innerText = `성공: '${file.name}' 데이터를 불러왔습니다. (${jsonData.length}행)`;
-                    console.log(jsonData); // 개발자 도구(F12)에서 확인 가능
+                
+                reader.onload = function(evt) {
+                    try {
+                        const data = new Uint8Array(evt.target.result);
+                        // Read original excel sheets directly
+                        const workbook = XLSX.read(data, {type: 'array'});
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        
+                        // Parse as highly flexible 2D array
+                        const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1, defval: ""});
+                        
+                        // Clean null/empty outer rows
+                        const filteredRows = rows.filter(row => row && row.length > 0);
+                        
+                        callback(filteredRows);
+                        statusEl.className = "text-[10px] text-emerald-600 font-bold text-center";
+                        statusEl.textContent = `성공 (${filteredRows.length}행 로드)`;
+                    } catch (error) {
+                        statusEl.className = "text-[10px] text-red-500 font-bold text-center";
+                        statusEl.textContent = "오류 발생";
+                        console.error(error);
+                    }
                 };
                 reader.readAsArrayBuffer(file);
             });
-        });
+        }
+
+        // Run with Demo Mode
+        function runDemoProcess() {
+            finalMergedDataset = demoDataset.map(row => {
+                const pop = row.총인구수;
+                const elderly = row.고령인구수;
+                const pct = (elderly / pop) * 100;
+                const hosp100k = (row.대형병원수 / pop) * 100000;
+                const doc100k = (row.의과전문의수 / pop) * 100000;
+
+                return {
+                    "시도": row.시도,
+                    "시군구": row.시군구,
+                    "총인구수": pop,
+                    "고령인구수": elderly,
+                    "노약자_비율_pct": pct,
+                    "대형병원수": row.대형병원수,
+                    "의과전문의수": row.의과전문의수,
+                    "인구_10만명당_대형병원수": hosp100k,
+                    "인구_10만명당_전문의수": doc100k
+                };
+            });
+            initializeDashboard();
+        }
+
+        // Excel Fusion Merger Engine
+        function runMergeProcess() {
+            if (parsedPop.length === 0) {
+                alert("1. 인구 데이터 엑셀 파일을 먼저 업로드해 주세요!");
+                return;
+            }
+
+            let populationMap = {};
+            let sidoIdx = 0, sigunguIdx = 1, totalIdx = 2, elderlyIdx = 3;
+            let foundHeader = false;
+
+            // Robust dynamic header locator for Population sheet
+            for (let i = 0; i < Math.min(10, parsedPop.length); i++) {
+                const row = parsedPop[i];
+                if (!row) continue;
+                if (row.indexOf("시도") !== -1 || row.indexOf("65세이상 전체") !== -1) {
+                    sidoIdx = row.indexOf("시도") !== -1 ? row.indexOf("시도") : 0;
+                    sigunguIdx = row.indexOf("시군구") !== -1 ? row.indexOf("시군구") : 1;
+                    totalIdx = row.indexOf("전체") !== -1 ? row.indexOf("전체") : 2;
+                    
+                    const foundElderly = row.findIndex(c => String(c).includes("65세이상"));
+                    if (foundElderly !== -1) elderlyIdx = foundElderly;
+                    
+                    foundHeader = true;
+                    break;
+                }
+            }
+
+            const skipRows = foundHeader ? parsedPop.findIndex(row => row.indexOf("시도") !== -1 || row.indexOf("65세이상 전체") !== -1) + 1 : 3;
+
+            parsedPop.forEach((row, index) => {
+                if (index < skipRows) return;
+                const rawSido = cleanString(row[sidoIdx]);
+                const rawSigungu = cleanString(row[sigunguIdx]);
+                const totalPopStr = cleanNumberString(row[totalIdx]);
+                const elderlyPopStr = cleanNumberString(row[elderlyIdx]);
+
+                if (rawSido && rawSigungu && totalPopStr > 0) {
+                    const key = `${rawSido}_${rawSigungu}`;
+                    populationMap[key] = {
+                        sido: rawSido,
+                        sigungu: rawSigungu,
+                        total: totalPopStr,
+                        elderly: elderlyPopStr || 0
+                    };
+                }
+            });
+
+            // Robust dynamic locator for Doctor sheet
+            let doctorMap = {};
+            let docSidoIdx = 2, docSigunguIdx = 3, docCountIdx = 4;
+            
+            for (let i = 0; i < Math.min(5, parsedDoc.length); i++) {
+                const row = parsedDoc[i];
+                if (!row) continue;
+                if (row.indexOf("의과전문의 인원수") !== -1) {
+                    docSidoIdx = row.indexOf("시도") !== -1 ? row.indexOf("시도") : 2;
+                    docSigunguIdx = row.indexOf("시군구") !== -1 ? row.indexOf("시군구") : 3;
+                    docCountIdx = row.indexOf("의과전문의 인원수") !== -1 ? row.indexOf("의과전문의 인원수") : 4;
+                    break;
+                }
+            }
+
+            parsedDoc.forEach((row, index) => {
+                if (index === 0) return;
+                const rawSido = cleanString(row[docSidoIdx]);
+                const rawSigungu = cleanString(row[docSigunguIdx]);
+                const docCount = Number(row[docCountIdx]) || 0;
+
+                if (rawSido && rawSigungu) {
+                    const key = `${normalizeSido(rawSido)}_${normalizeSigungu(rawSigungu)}`;
+                    doctorMap[key] = (doctorMap[key] || 0) + docCount;
+                }
+            });
+
+            // Hospital Counter parser for General & Super Hospitals
+            let hospMap = {};
+
+            function parseHosp(rows) {
+                if (!rows || rows.length === 0) return;
+                let hospSidoIdx = 0, hospSigunguIdx = 1, hospCatIdx = 2, hospCountIdx = 3;
+                let headerRowIndex = 2; // Default starting index
+
+                for (let i = 0; i < Math.min(10, rows.length); i++) {
+                    const row = rows[i];
+                    if (!row) continue;
+                    if (row.indexOf("요양종별") !== -1) {
+                        headerRowIndex = i;
+                        hospSidoIdx = row.indexOf("시도") !== -1 ? row.indexOf("시도") : 0;
+                        hospSigunguIdx = row.indexOf("시군구") !== -1 ? row.indexOf("시군구") : 1;
+                        hospCatIdx = row.indexOf("요양종별") !== -1 ? row.indexOf("요양종별") : 2;
+                        hospCountIdx = row.indexOf("계") !== -1 ? row.indexOf("계") : 3;
+                        break;
+                    }
+                }
+
+                rows.forEach((row, index) => {
+                    if (index <= headerRowIndex) return;
+                    const rawSido = cleanString(row[hospSidoIdx]);
+                    const rawSigungu = cleanString(row[hospSigunguIdx]);
+                    const category = cleanString(row[hospCatIdx]);
+                    const count = Number(row[hospCountIdx]) || 0;
+
+                    if (rawSido && rawSigungu && (category === "계" || category.includes("병원"))) {
+                        if (rawSigungu !== rawSido && rawSigungu !== "") {
+                            const key = `${normalizeSido(rawSido)}_${normalizeSigungu(rawSigungu)}`;
+                            hospMap[key] = (hospMap[key] || 0) + count;
+                        }
+                    }
+                });
+            }
+
+            parseHosp(parsedHospG);
+            parseHosp(parsedHospS);
+
+            // Compute metrics and build consolidated datasets
+            finalMergedDataset = [];
+            
+            Object.keys(populationMap).forEach(key => {
+                const pop = populationMap[key];
+                const normalizedKey = `${normalizeSido(pop.sido)}_${normalizeSigungu(pop.sigungu)}`;
+                
+                const doctorCount = doctorMap[normalizedKey] || 0;
+                const hospitalCount = hospMap[normalizedKey] || 0;
+
+                const elderlyPct = pop.total > 0 ? (pop.elderly / pop.total) * 100 : 0;
+                const hosp100k = pop.total > 0 ? (hospitalCount / pop.total) * 100000 : 0;
+                const doc100k = pop.total > 0 ? (doctorCount / pop.total) * 100000 : 0;
+
+                // Strip redundancy
+                if (pop.sigungu && pop.total > 1000) {
+                    finalMergedDataset.push({
+                        "시도": pop.sido,
+                        "시군구": pop.sigungu,
+                        "총인구수": pop.total,
+                        "고령인구수": pop.elderly,
+                        "노약자_비율_pct": elderlyPct,
+                        "대형병원수": hospitalCount,
+                        "의과전문의수": doctorCount,
+                        "인구_10만명당_대형병원수": hosp100k,
+                        "인구_10만명당_전문의수": doc100k
+                    });
+                }
+            });
+
+            if (finalMergedDataset.length === 0) {
+                alert("결합된 매핑 데이터가 존재하지 않습니다. 제공된 4개의 엑셀 원본 파일 구조가 맞는지 다시한번 확인해 주십시오.");
+                return;
+            }
+
+            initializeDashboard();
+        }
+
+        // Clean string characters
+        function cleanString(str) {
+            if (str === undefined || str === null) return "";
+            return String(str).replace(/[\"\'\s]/g, '').trim();
+        }
+
+        // Clean number representation
+        function cleanNumberString(str) {
+            if (str === undefined || str === null) return 0;
+            if (typeof str === 'number') return str;
+            const clean = String(str).replace(/[\"\'\s,]/g, '').trim();
+            return Number(clean) || 0;
+        }
+
+        // Sido Normalization dictionary
+        function normalizeSido(sido) {
+            if (!sido) return "";
+            sido = cleanString(sido);
+            if (sido.startsWith("서울")) return "서울";
+            if (sido.startsWith("경기")) return "경기";
+            if (sido.startsWith("강원")) return "강원";
+            if (sido.startsWith("인천")) return "인천";
+            if (sido.startsWith("부산")) return "부산";
+            if (sido.startsWith("대구")) return "대구";
+            if (sido.startsWith("대전")) return "대전";
+            if (sido.startsWith("광주")) return "광주";
+            if (sido.startsWith("울산")) return "울산";
+            if (sido.startsWith("세종")) return "세종";
+            if (sido.startsWith("충북") || sido.startsWith("충청북")) return "충북";
+            if (sido.startsWith("충남") || sido.startsWith("충청남")) return "충남";
+            if (sido.startsWith("전북") || sido.startsWith("전라북")) return "전북";
+            if (sido.startsWith("전남") || sido.startsWith("전라남")) return "전남";
+            if (sido.startsWith("경북") || sido.startsWith("경상북")) return "경북";
+            if (sido.startsWith("경남") || sido.startsWith("경상남")) return "경남";
+            if (sido.startsWith("제주")) return "제주";
+            return sido;
+        }
+
+        function normalizeSigungu(sigungu) {
+            return cleanString(sigungu);
+        }
+
+        // Setup dashboard components
+        function initializeDashboard() {
+            document.getElementById('upload-panel').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+
+            const sidos = [...new Set(finalMergedDataset.map(row => row.시도))];
+            const filterSelect = document.getElementById('sido-filter');
+            filterSelect.innerHTML = '<option value="전체">전체 지역보기</option>';
+            sidos.forEach(sido => {
+                const opt = document.createElement('option');
+                opt.value = sido;
+                opt.textContent = sido;
+                filterSelect.appendChild(opt);
+            });
+
+            document.getElementById('data-count-badge').textContent = finalMergedDataset.length;
+
+            renderKPIs();
+            renderTable(finalMergedDataset);
+            applyFiltersAndCharts();
+            runClusteringAndReport();
+        }
+
+        // KPI calculator
+        function renderKPIs() {
+            const totalPop = finalMergedDataset.reduce((sum, row) => sum + row.총인구수, 0);
+            const totalElderly = finalMergedDataset.reduce((sum, row) => sum + row.고령인구수, 0);
+            const avgElderlyPct = finalMergedDataset.reduce((sum, row) => sum + row.노약자_비율_pct, 0) / finalMergedDataset.length;
+
+            const noHospitalRegions = finalMergedDataset.filter(row => row.대형병원수 === 0);
+            const noHospitalCount = noHospitalRegions.length;
+
+            document.getElementById('kpi-total-pop').textContent = `${totalPop.toLocaleString()}명`;
+            document.getElementById('kpi-total-elderly').textContent = `${totalElderly.toLocaleString()}명`;
+            document.getElementById('kpi-avg-elderly-pct').textContent = `${avgElderlyPct.toFixed(2)} %`;
+            document.getElementById('kpi-no-hosp-count').textContent = `${noHospitalCount} 곳`;
+
+            const alertBox = document.getElementById('no-hospital-alert-box');
+            const container = document.getElementById('no-hospital-list-container');
+            
+            if (noHospitalCount > 0) {
+                alertBox.classList.remove('hidden');
+                container.innerHTML = '';
+                noHospitalRegions.forEach(row => {
+                    const tag = document.createElement('span');
+                    tag.className = "inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-800 rounded-lg text-xs font-semibold cursor-default transition";
+                    tag.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> ${row.시도} ${row.시군구}`;
+                    container.appendChild(tag);
+                });
+            } else {
+                alertBox.classList.add('hidden');
+            }
+        }
+
+        // Table painter
+        function renderTable(data) {
+            const tbody = document.getElementById('merged-table-body');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                
+                // Get matching cluster from latest analyzed state
+                const matchAnalyzed = latestAnalyzedDataset.find(r => r.시도 === row.시도 && r.시군구 === row.시군구);
+                const clusterName = matchAnalyzed && matchAnalyzed.clusterId ? `군집 ${matchAnalyzed.clusterId}` : "연산대기";
+                const clusterBadgeColor = clusterName === "연산대기" ? "bg-slate-100 text-slate-500" : "bg-purple-100 text-purple-700";
+
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-700">${row.시도}</td>
+                    <td class="p-3 text-slate-600">${row.시군구}</td>
+                    <td class="p-3 text-right text-slate-600 font-mono">${row.총인구수.toLocaleString()}</td>
+                    <td class="p-3 text-right text-slate-600 font-mono">${row.고령인구수.toLocaleString()}</td>
+                    <td class="p-3 text-right text-slate-600 font-mono">${row.노약자_비율_pct.toFixed(2)} %</td>
+                    <td class="p-3 text-right text-slate-600 font-mono">${row.대형병원수}</td>
+                    <td class="p-3 text-right text-slate-600 font-mono">${row.의과전문의수.toLocaleString()}</td>
+                    <td class="p-3 text-right text-slate-600 font-mono">${row.인구_10만명당_대형병원수.toFixed(2)}</td>
+                    <td class="p-3 text-right text-slate-600 font-mono">${row.인구_10만명당_전문의수.toFixed(2)}</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${clusterBadgeColor}">${clusterName}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Sub-filters and Bar visualizer
+        function applyFiltersAndCharts() {
+            const selectedSido = document.getElementById('sido-filter').value;
+            let filteredData = [];
+
+            if (selectedSido === '전체') {
+                filteredData = [...finalMergedDataset];
+            } else {
+                filteredData = finalMergedDataset.filter(row => row.시도 === selectedSido);
+            }
+
+            renderTable(filteredData);
+
+            let sortedHosp = [...filteredData].sort((a,b) => b.인구_10만명당_대형병원수 - a.인구_10만명당_대형병원수);
+            let top5Hosp = sortedHosp.slice(0, 5);
+            let bottom5Hosp = sortedHosp.slice(-5).filter(x => !top5Hosp.includes(x));
+            let combinedHosp = [...top5Hosp, ...bottom5Hosp].reverse();
+
+            let sortedDoc = [...filteredData].sort((a,b) => b.인구_10만명당_전문의수 - a.인구_10만명당_전문의수);
+            let top5Doc = sortedDoc.slice(0, 5);
+            let bottom5Doc = sortedDoc.slice(-5).filter(x => !top5Doc.includes(x));
+            let combinedDoc = [...top5Doc, ...bottom5Doc].reverse();
+
+            renderBarChart('chart-hosp', combinedHosp, '인구_10만명당_대형병원수', '10만명당 대형병원수', '#F43F5E');
+            renderBarChart('chart-doc', combinedDoc, '인구_10만명당_전문의수', '10만명당 전문의수', '#06B6D4');
+        }
+
+        function renderBarChart(divId, data, featureName, labelText, barColor) {
+            const xData = data.map(row => row[featureName]);
+            const yData = data.map(row => `${row.시도} ${row.시군구}`);
+
+            const plotData = [{
+                type: 'bar',
+                x: xData,
+                y: yData,
+                orientation: 'h',
+                marker: {
+                    color: barColor,
+                    opacity: 0.8,
+                    line: { width: 1.5, color: '#ffffff' }
+                },
+                hovertemplate: '%{y}: <b>%{x:.2f}</b><extra></extra>'
+            }];
+
+            const layout = {
+                margin: { l: 120, r: 20, t: 20, b: 40 },
+                xaxis: { title: labelText, gridcolor: '#f1f5f9' },
+                yaxis: { automargin: true },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                responsive: true
+            };
+
+            Plotly.newPlot(divId, plotData, layout, {displayModeBar: false});
+        }
+
+        // K-Means change handler
+        function handleKSliderChange(e) {
+            document.getElementById('k-value-display').textContent = e.target.value;
+            runClusteringAndReport();
+        }
+
+        // Math-native Clustering Algorithm
+        function runClusteringAndReport() {
+            const k = parseInt(document.getElementById('k-slider').value);
+            if (finalMergedDataset.length === 0) return;
+
+            const features = ["노약자_비율_pct", "인구_10만명당_대형병원수", "인구_10만명당_전문의수"];
+            const n = finalMergedDataset.length;
+            const dim = features.length;
+
+            let means = Array(dim).fill(0);
+            let stds = Array(dim).fill(0);
+
+            for (let i = 0; i < dim; i++) {
+                let sum = 0;
+                for (let j = 0; j < n; j++) sum += finalMergedDataset[j][features[i]];
+                means[i] = sum / n;
+
+                let sumSq = 0;
+                for (let j = 0; j < n; j++) sumSq += Math.pow(finalMergedDataset[j][features[i]] - means[i], 2);
+                stds[i] = Math.sqrt(sumSq / n) || 1;
+            }
+
+            const scaled = finalMergedDataset.map(row => {
+                return features.map((feat, i) => (row[feat] - means[i]) / stds[i]);
+            });
+
+            let centroids = [];
+            let chosenIndices = new Set();
+            while (centroids.length < k && centroids.length < n) {
+                let randomIdx = Math.floor(Math.random() * n);
+                if (!chosenIndices.has(randomIdx)) {
+                    chosenIndices.add(randomIdx);
+                    centroids.push([...scaled[randomIdx]]);
+                }
+            }
+
+            let assignments = Array(n).fill(-1);
+            let changed = true;
+            let iterations = 100;
+
+            while (changed && iterations-- > 0) {
+                changed = false;
+                
+                for (let i = 0; i < n; i++) {
+                    let minDist = Infinity;
+                    let bestCluster = -1;
+                    for (let c = 0; c < centroids.length; c++) {
+                        let dist = 0;
+                        for (let d = 0; d < dim; d++) {
+                            dist += Math.pow(scaled[i][d] - centroids[c][d], 2);
+                        }
+                        if (dist < minDist) {
+                            minDist = dist;
+                            bestCluster = c;
+                        }
+                    }
+                    if (assignments[i] !== bestCluster) {
+                        assignments[i] = bestCluster;
+                        changed = true;
+                    }
+                }
+
+                let newCentroids = Array(centroids.length).fill(0).map(() => Array(dim).fill(0));
+                let counts = Array(centroids.length).fill(0);
+
+                for (let i = 0; i < n; i++) {
+                    let c = assignments[i];
+                    if (c !== -1) {
+                        counts[c]++;
+                        for (let d = 0; d < dim; d++) {
+                            newCentroids[c][d] += scaled[i][d];
+                        }
+                    }
+                }
+
+                for (let c = 0; c < centroids.length; c++) {
+                    if (counts[c] > 0) {
+                        for (let d = 0; d < dim; d++) {
+                            centroids[c][d] = newCentroids[c][d] / counts[c];
+                        }
+                    }
+                }
+            }
+
+            // Bind cluster assignments to global analytical dataset
+            latestAnalyzedDataset = finalMergedDataset.map((row, i) => {
+                return { ...row, clusterId: assignments[i] + 1 };
+            });
+
+            // Re-render table with latest cluster IDs
+            const selectedSido = document.getElementById('sido-filter').value;
+            let filteredData = [];
+            if (selectedSido === '전체') {
+                filteredData = [...finalMergedDataset];
+            } else {
+                filteredData = finalMergedDataset.filter(row => row.시도 === selectedSido);
+            }
+            renderTable(filteredData);
+
+            let clusterSummaries = {};
+            for (let c = 1; c <= k; c++) {
+                clusterSummaries[c] = {
+                    count: 0,
+                    sumElderly: 0,
+                    sumHosp: 0,
+                    sumDoc: 0,
+                    id: c
+                };
+            }
+
+            latestAnalyzedDataset.forEach(row => {
+                let c = row.clusterId;
+                clusterSummaries[c].count++;
+                clusterSummaries[c].sumElderly += row.노약자_비율_pct;
+                clusterSummaries[c].sumHosp += row.인구_10만명당_대형병원수;
+                clusterSummaries[c].sumDoc += row.인구_10만명당_전문의수;
+            });
+
+            const summaryTableBody = document.getElementById('cluster-table-body');
+            summaryTableBody.innerHTML = '';
+
+            let clusterSummaryList = [];
+
+            for (let c = 1; c <= k; c++) {
+                const s = clusterSummaries[c];
+                const count = s.count || 1;
+                const avgElderly = s.sumElderly / count;
+                const avgHosp = s.sumHosp / count;
+                const avgDoc = s.sumDoc / count;
+
+                clusterSummaryList.push({
+                    id: c,
+                    avgElderly,
+                    avgHosp,
+                    avgDoc,
+                    count: s.count
+                });
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-2"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-800">군집 ${c}</span></td>
+                    <td class="py-2 text-right text-indigo-600">${avgElderly.toFixed(1)}%</td>
+                    <td class="py-2 text-right text-rose-600">${avgHosp.toFixed(2)}개</td>
+                    <td class="py-2 text-right text-cyan-600">${avgDoc.toFixed(1)}명</td>
+                    <td class="py-2 text-right text-slate-500 font-bold">${s.count}곳</td>
+                `;
+                summaryTableBody.appendChild(tr);
+            }
+
+            // Target high-risk scoring
+            let highestRiskScore = -Infinity;
+            let criticalClusterId = 1;
+
+            clusterSummaryList.forEach(item => {
+                let stdElderly = (item.avgElderly - means[0]) / stds[0];
+                let stdHosp = (item.avgHosp - means[1]) / stds[1];
+                let stdDoc = (item.avgDoc - means[2]) / stds[2];
+
+                let score = stdElderly - stdHosp - stdDoc;
+                if (score > highestRiskScore) {
+                    highestRiskScore = score;
+                    criticalClusterId = item.id;
+                }
+            });
+
+            const criticalRegions = latestAnalyzedDataset.filter(row => row.clusterId === criticalClusterId);
+            const criticalNames = criticalRegions.slice(0, 8).map(row => `${row.시도} ${row.시군구}`).join(', ');
+
+            document.getElementById('report-risk-status').innerHTML = `🚨 종합 기계학습 분석 진단 결과: 초고위험 군집은 [군집 ${criticalClusterId}] 입니다!`;
+            document.getElementById('report-description').innerHTML = `
+                전국 융합 데이터 분석 결과, <b>[군집 ${criticalClusterId}]</b> 권역은 타 지역에 비해 노약자 및 고령 인구 밀도가 현저히 조밀함에도 불구하고 
+                10만명당 대형병원 배후 인프라와 가동 의과전문의 공급량이 절대적으로 부족하여 <b>응급 보건 의료 취약지</b>로 규명되었습니다.<br><br>
+                현재 본 취약 권역에 분류된 대한민국 시군구는 총 <b>${criticalRegions.length}곳</b>이며, 대표 구역으로는 <b>${criticalNames}${criticalRegions.length > 8 ? ' 등' : ''}</b>의 취약 지점이 검출되었습니다.
+            `;
+
+            render3DScatter(latestAnalyzedDataset, k);
+        }
+
+        // 3D Visualizer
+        function render3DScatter(data, k) {
+            const colors = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'];
+            let traces = [];
+
+            for (let c = 1; c <= k; c++) {
+                const clusterRows = data.filter(row => row.clusterId === c);
+                traces.push({
+                    x: clusterRows.map(row => row.노약자_비율_pct),
+                    y: clusterRows.map(row => row.인구_10만명당_대형병원수),
+                    z: clusterRows.map(row => row.인구_10만명당_전문의수),
+                    mode: 'markers',
+                    name: `군집 ${c}`,
+                    marker: {
+                        size: 6,
+                        color: colors[c - 1] || '#94A3B8',
+                        opacity: 0.85
+                    },
+                    text: clusterRows.map(row => `${row.시도} ${row.시군구}<br>총인구: ${row.총인구수.toLocaleString()}명`),
+                    hovertemplate: '<b>%{text}</b><br>노약자비율: %{x:.2f}%<br>10만명당 병원수: %{y:.2f}개<br>10만명당 전문의: %{z:.2f}명<extra></extra>',
+                    type: 'scatter3d'
+                });
+            }
+
+            const layout = {
+                scene: {
+                    xaxis: { title: '노약자 비율 (%)', gridcolor: '#cbd5e1' },
+                    yaxis: { title: '10만명당 병원수', gridcolor: '#cbd5e1' },
+                    zaxis: { title: '10만명당 전문의수', gridcolor: '#cbd5e1' }
+                },
+                margin: { l: 0, r: 0, t: 0, b: 0 },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                legend: { orientation: 'h', y: 0.05 },
+                responsive: true
+            };
+
+            Plotly.newPlot('chart-3d', traces, layout, {displayModeBar: false});
+        }
+
+        // Export Merged & Clustered Data to Excel File
+        function exportDatasetToExcel() {
+            if (latestAnalyzedDataset.length === 0) {
+                alert("다운로드할 데이터가 아직 준비되지 않았습니다. 파일을 연동하여 분석을 완료해 주세요.");
+                return;
+            }
+
+            try {
+                // Map columns to elegant Korean names
+                const excelRows = latestAnalyzedDataset.map(row => ({
+                    "시도": row.시도,
+                    "시군구": row.시군구,
+                    "총인구수": row.총인구수,
+                    "고령인구수": row.고령인구수,
+                    "노약자 비율 (%)": Number(row.노약자_비율_pct.toFixed(2)),
+                    "대형병원수 (종합+상급)": row.대형병원수,
+                    "의과전문의수": row.의과전문의수,
+                    "인구 10만명당 대형병원수": Number(row.인구_10만명당_대형병원수.toFixed(2)),
+                    "인구 10만명당 전문의수": Number(row.인구_10만명당_전문의수.toFixed(2)),
+                    "AI 연산 소속군집": row.clusterId ? `군집 ${row.clusterId}` : "미분류"
+                }));
+
+                const worksheet = XLSX.utils.json_to_sheet(excelRows);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "통합의료인프라_분석");
+
+                // File download prompt
+                XLSX.writeFile(workbook, "전국_시군구별_의료인프라_통합_분석결과.xlsx");
+            } catch (err) {
+                alert("엑셀 파일을 빌드하는 과정에서 예외가 발생했습니다: " + err.message);
+            }
+        }
     </script>
 </body>
 </html>
