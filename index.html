@@ -13,11 +13,20 @@
         body {
             font-family: 'Pretendard', sans-serif;
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .step-transition { transition: all 0.4s ease-in-out; }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
@@ -33,48 +42,48 @@
                     <p class="text-xs text-slate-500">인구 · 전문의 · 대형병원 반영 보건 의료 격차 분석 시스템</p>
                 </div>
             </div>
-            <button id="back-to-upload-btn" class="hidden flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold border border-slate-300 transition">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                파일 업로드 화면으로 이동
-            </button>
+            <div class="flex items-center gap-2">
+                <button id="load-demo-btn" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-md transition">
+                    <i data-lucide="play" class="w-4 h-4"></i>
+                    데모 데이터 자동 가동하기
+                </button>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-100 bg-slate-50/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-2 pt-2">
+                <button id="tab-upload-btn" onclick="switchTab('upload')" class="border-b-2 border-blue-600 text-blue-600 px-4 py-2.5 text-sm font-bold flex items-center gap-2 transition focus:outline-none">
+                    <i data-lucide="file-up" class="w-4 h-4"></i>
+                    1단계: 데이터 업로드
+                </button>
+                <button id="tab-dashboard-btn" onclick="switchTab('dashboard')" class="border-b-2 border-transparent text-slate-400 px-4 py-2.5 text-sm font-medium flex items-center gap-2 transition focus:outline-none cursor-not-allowed" disabled>
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                    2단계: 분석 대시보드
+                </button>
+            </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <div id="step-upload" class="step-transition bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-8 max-w-4xl mx-auto my-8">
-            <div class="text-center space-y-2 max-w-xl mx-auto">
-                <h2 class="text-2xl font-extrabold text-slate-900 flex items-center justify-center gap-2">
-                    <i data-lucide="file-up" class="text-blue-600 w-7 h-7"></i>
-                    1단계: 데이터 분석 준비
+        <div id="panel-upload" class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="file-up" class="text-blue-600"></i>
+                    데이터 파일 업로드
                 </h2>
-                <p class="text-sm text-slate-500">분석에 필요한 4가지 대상 엑셀 파일(.xlsx)을 업로드하거나,<br>데모 가동 버튼을 눌러 즉시 샘플 분석 대시보드로 이동하세요.</p>
+                <p class="text-xs text-slate-500 mt-1">다운로드 받으신 4가지 분석 대상 엑셀 파일(.xlsx)을 별도 변환 없이 그대로 선택해 주세요.</p>
             </div>
 
-            <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="p-2 bg-blue-600 text-white rounded-xl shadow-md">
-                        <i data-lucide="sparkles" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-blue-900">준비된 파일이 없으신가요?</h4>
-                        <p class="text-xs text-blue-700">시뮬레이션용 내장 데이터를 즉시 가동하여 화면을 확인할 수 있습니다.</p>
-                    </div>
-                </div>
-                <button id="load-demo-btn" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap">
-                    <i data-lucide="play" class="w-4 h-4"></i>
-                    데모 데이터로 바로 이동하기
-                </button>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition flex flex-col justify-between space-y-3">
                     <div>
                         <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">1. 인구 데이터</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">1.인구 데이터.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">전국 총 인구수, 고령 인구수 분석용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-blue-500 text-slate-600 hover:text-blue-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 찾기
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-blue-500 text-slate-600 hover:text-blue-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 업로드
                         <input type="file" id="file-pop" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-pop" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
@@ -84,9 +93,10 @@
                     <div>
                         <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">2. 전문의 데이터</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">2.전문의 데이터.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">hospBasisList 의과전문의 수 지역 매핑용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-emerald-500 text-slate-600 hover:text-emerald-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 찾기
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-emerald-500 text-slate-600 hover:text-emerald-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 업로드
                         <input type="file" id="file-doc" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-doc" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
@@ -96,9 +106,10 @@
                     <div>
                         <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">3. 종합병원 수</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">3.종합병원 수.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">종합병원 유무 확인용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-purple-500 text-slate-600 hover:text-purple-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 찾기
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-purple-500 text-slate-600 hover:text-purple-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 업로드
                         <input type="file" id="file-general" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-general" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
@@ -108,56 +119,58 @@
                     <div>
                         <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded">4. 상급종합병원 수</span>
                         <h4 class="text-sm font-bold text-slate-900 mt-2 break-all">4.상급종합병원 수.xlsx</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">상급종합병원 유무 확인용</p>
                     </div>
-                    <label class="w-full text-center bg-white border border-slate-300 hover:border-rose-500 text-slate-600 hover:text-rose-600 py-2 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
-                        파일 찾기
+                    <label class="w-full text-center bg-white border border-slate-300 hover:border-rose-500 text-slate-600 hover:text-rose-600 py-1.5 px-3 rounded-lg text-xs font-medium cursor-pointer transition">
+                        파일 업로드
                         <input type="file" id="file-super" class="hidden" accept=".xlsx" />
                     </label>
                     <div id="status-super" class="text-[10px] text-slate-400 italic text-center">선택된 파일 없음</div>
                 </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-100 flex justify-center">
-                <button id="merge-analyze-btn" class="w-full sm:w-80 flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3.5 rounded-xl text-base font-bold shadow-lg transition">
-                    <i data-lucide="merge" class="w-5 h-5"></i>
-                    업로드 데이터 융합 및 분석 시작
+            <div class="flex justify-end pt-2 border-t border-slate-100">
+                <button id="merge-analyze-btn" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/10 transition">
+                    <i data-lucide="merge"></i>
+                    업로드 데이터 실시간 분석 시작
                 </button>
             </div>
         </div>
 
-        <div id="step-dashboard" class="hidden step-transition space-y-8">
+        <div id="panel-dashboard" class="hidden space-y-8 animate-fade-in">
             
-            <div class="border-b border-slate-200 pb-4">
-                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                    <i data-lucide="bar-chart-3" class="text-blue-600"></i>
-                    2단계: 보건의료 인프라 종합 격차 분석 리포트
-                </h2>
-            </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="users" class="w-6 h-6"></i></div>
+                    <div class="p-4 bg-blue-50 text-blue-600 rounded-xl">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">전국 총인구 수</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-total-pop">0명</h3>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-indigo-50 text-indigo-600 rounded-xl"><i data-lucide="contact" class="w-6 h-6"></i></div>
+                    <div class="p-4 bg-indigo-50 text-indigo-600 rounded-xl">
+                        <i data-lucide="contact" class="w-6 h-6"></i>
+                    </div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">65세 이상 고령인구 수</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-total-elderly">0명</h3>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="percentage" class="w-6 h-6"></i></div>
+                    <div class="p-4 bg-emerald-50 text-emerald-600 rounded-xl">
+                        <i data-lucide="percentage" class="w-6 h-6"></i>
+                    </div>
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">평균 노약자 비율</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-avg-elderly-pct">0.00 %</h3>
                     </div>
                 </div>
                 <div class="bg-red-50 rounded-2xl border border-red-200 p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-4 bg-red-100 text-red-600 rounded-xl"><i data-lucide="alert-octagon" class="w-6 h-6"></i></div>
+                    <div class="p-4 bg-red-100 text-red-600 rounded-xl">
+                        <i data-lucide="alert-octagon" class="w-6 h-6"></i>
+                    </div>
                     <div>
                         <p class="text-xs font-semibold text-red-700 uppercase tracking-wider">대형병원 전무 시군구</p>
                         <h3 class="text-2xl font-bold text-red-900 mt-1" id="kpi-no-hosp-count">0 곳</h3>
@@ -167,9 +180,12 @@
 
             <div id="no-hospital-alert-box" class="bg-red-50 border border-red-100 rounded-2xl p-6 hidden">
                 <div class="flex items-start gap-3">
-                    <div class="p-1.5 bg-red-100 text-red-700 rounded-lg"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
+                    <div class="p-1.5 bg-red-100 text-red-700 rounded-lg">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                    </div>
                     <div class="space-y-2 w-full">
                         <h4 class="font-bold text-red-900 text-sm">🚨 대형병원(종합병원/상급종합병원)이 단 1개도 없는 의료 취약지</h4>
+                        <p class="text-xs text-red-700">관할 내에 필수 응급/중증 관리를 책임질 대형병원이 전무하여 대진료권 이동이 강제되는 의료 취약지입니다.</p>
                         <div id="no-hospital-list-container" class="flex flex-wrap gap-2 pt-1"></div>
                     </div>
                 </div>
@@ -179,19 +195,845 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-slate-50 border-b border-slate-200 gap-4">
                     <button onclick="toggleAccordion('merged-data-panel')" class="flex items-center gap-2 font-semibold text-slate-700 focus:outline-none">
                         <i data-lucide="shuffle" class="w-5 h-5 text-blue-600"></i>
-                        📊 분석 결과 리스트 확인 (<span id="data-count-badge">0</span>개 구역)
+                        📊 분석 결과 다운받기 (<span id="data-count-badge">0</span>개 구역 분석완료)
                         <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transform transition-transform ml-1" id="accordion-icon"></i>
                     </button>
-                    <button id="download-excel-btn" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition">
+                    <button id="download-excel-btn" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition whitespace-nowrap">
                         <i data-lucide="download" class="w-4 h-4"></i>
                         융합 데이터 엑셀(.xlsx) 다운로드
                     </button>
                 </div>
-                <div id="merged-data-panel" class="hidden max-h-[350px] overflow-auto">
+                <div id="merged-data-panel" class="hidden max-h-[400px] overflow-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-100/50 text-slate-600 text-xs uppercase font-semibold sticky top-0 bg-white shadow-sm z-10">
                                 <th class="p-3 border-b border-slate-200">시도</th>
                                 <th class="p-3 border-b border-slate-200">시군구</th>
                                 <th class="p-3 border-b border-slate-200 text-right">총인구수</th>
-                                <th class="p-3 border-b border-slate-200 text-right">
+                                <th class="p-3 border-b border-slate-200 text-right">고령인구수</th>
+                                <th class="p-3 border-b border-slate-200 text-right">노약자 비율 (%)</th>
+                                <th class="p-3 border-b border-slate-200 text-right">대형병원수 (종합+상급)</th>
+                                <th class="p-3 border-b border-slate-200 text-right">의과전문의수</th>
+                                <th class="p-3 border-b border-slate-200 text-right">10만명당 대형병원</th>
+                                <th class="p-3 border-b border-slate-200 text-right">10만명당 전문의</th>
+                                <th class="p-3 border-b border-slate-200 text-center">소속 군집</th>
+                            </tr>
+                        </thead>
+                        <tbody id="merged-table-body" class="text-sm divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                            <i data-lucide="search-code" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">지역별 대시보드 및 상세 분석</h3>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <label for="sido-filter" class="text-sm font-semibold text-slate-500 whitespace-nowrap">시도 필터:</label>
+                        <select id="sido-filter" class="w-full sm:w-56 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="전체">전체 지역보기</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                        <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                            인구 10만명당 대형병원수 비교 (상위 5 / 하위 5)
+                        </h4>
+                        <div id="chart-hosp" class="w-full h-80"></div>
+                    </div>
+                    <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                        <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
+                            인구 10만명당 전문의수 비교 (상위 5 / 하위 5)
+                        </h4>
+                        <div id="chart-doc" class="w-full h-80"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-5 space-y-2">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                                <i data-lucide="cpu" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900">AI 클러스터링을 통한 의료 인프라 군집 시각적 비교</h3>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+                            <span class="text-sm font-semibold text-slate-600 whitespace-nowrap">군집 수: <span id="k-value-display" class="text-purple-600 font-bold">3</span></span>
+                            <input type="range" id="k-slider" min="2" max="6" value="3" class="w-28 accent-purple-600 cursor-pointer">
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500">
+                        <b>노약자 비율</b>, <b>인구 10만명당 대형병원수</b>, <b>인구 10만명당 전문의수</b> 특성을 표준화한 후 AI를 활용하여 비슷한 구역끼리 군집화 됩니다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    <div class="lg:col-span-7 bg-slate-50/50 rounded-2xl border border-slate-100 p-4 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-700 mb-1">💡 3차원 공간 내 의료 취약도 분포 (노약자비율 x 병원수 x 전문의수)</h4>
+                            <p class="text-[11px] text-slate-400">마우스 드래그를 사용하여 그래프를 회전 및 확대하여 공간 밀도를 가시화할 수 있습니다.</p>
+                        </div>
+                        <div id="chart-3d" class="w-full h-[450px]"></div>
+                    </div>
+
+                    <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-4 flex-1">
+                            <h4 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                                <i data-lucide="align-left" class="w-4 h-4 text-purple-600"></i>
+                                분석 군집별 평균 핵심 지표
+                            </h4>
+                            <div class="overflow-x-auto max-h-[160px]">
+                                <table class="w-full text-left text-xs divide-y divide-slate-200">
+                                    <thead>
+                                        <tr class="text-slate-400 font-semibold">
+                                            <th class="pb-2">군집</th>
+                                            <th class="pb-2 text-right">노약자 비율</th>
+                                            <th class="pb-2 text-right">10만명당 대형병원</th>
+                                            <th class="pb-2 text-right">10만명당 전문의</th>
+                                            <th class="pb-2 text-right">포함 구역수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cluster-table-body" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-red-50 to-amber-50 border border-red-100 rounded-2xl p-6 space-y-4">
+                            <div class="flex items-center gap-2 text-red-800">
+                                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                                <span class="font-bold text-sm">종합 분석 리포트</span>
+                            </div>
+                            <div class="space-y-3 text-xs leading-relaxed text-slate-700">
+                                <p class="font-semibold text-slate-900" id="report-risk-status">데이터 분석 중...</p>
+                                <p id="report-description" class="text-slate-600">
+                                    4가지 병합 데이터가 성공적으로 연결되면 취약한 연쇄 보건 위험 지도를 추적하여 정교한 해석 리포트를 발행합니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400 space-y-2">
+            <p>© 2026 AI를 통한 대한민국 보건 의료 격차 분석 시스템. MADE BY 임태우</p>
+            <p>본 대시보드는 브라우저 환경에서 동작하여 데이터 정보 유출 방지에 완벽히 기여하고 안전합니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        let parsedPop = [];
+        let parsedDoc = [];
+        let parsedHospG = [];
+        let parsedHospS = [];
+        let finalMergedDataset = [];
+        let latestAnalyzedDataset = [];
+
+// Realistic Demo Data (전국 222개 시군구 전체 데이터 연동)
+        const demoDataset = [
+            { "시도": "강원특별자치도", "시군구": "고성군", "총인구수": 27204, "고령인구수": 9753, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "강원특별자치도", "시군구": "양양군", "총인구수": 27326, "고령인구수": 10299, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "강원특별자치도", "시군구": "정선군", "총인구수": 35128, "고령인구수": 12956, "대형병원수": 0, "의과전문의수": 12 },
+            { "시도": "강원특별자치도", "시군구": "철원군", "총인구수": 39711, "고령인구수": 12246, "대형병원수": 0, "의과전문의수": 8 },
+            { "시도": "강원특별자치도", "시군구": "평창군", "총인구수": 39897, "고령인구수": 15356, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "강원특별자치도", "시군구": "화천군", "총인구수": 22579, "고령인구수": 6942, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "강원특별자치도", "시군구": "횡성군", "총인구수": 45575, "고령인구수": 18436, "대형병원수": 0, "의과전문의수": 5 },
+            { "시도": "경기도", "시군구": "가평군", "총인구수": 62041, "고령인구수": 21597, "대형병원수": 0, "의과전문의수": 11 },
+            { "시도": "경기도", "시군구": "양평군", "총인구수": 126822, "고령인구수": 43216, "대형병원수": 0, "의과전문의수": 29 },
+            { "시도": "경기도", "시군구": "연천군", "총인구수": 42977, "고령인구수": 14788, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "경상남도", "시군구": "거창군", "총인구수": 58846, "고령인구수": 20343, "대형병원수": 0, "의과전문의수": 23 },
+            { "시도": "경상남도", "시군구": "고성군", "총인구수": 46808, "고령인구수": 18942, "대형병원수": 0, "의과전문의수": 15 },
+            { "시도": "경상남도", "시군구": "남해군", "총인구수": 41143, "고령인구수": 18171, "대형병원수": 0, "의과전문의수": 10 },
+            { "시도": "경상남도", "시군구": "밀양시", "총인구수": 98591, "고령인구수": 37055, "대형병원수": 0, "의과전문의수": 39 },
+            { "시도": "경상남도", "시군구": "산청군", "총인구수": 32638, "고령인구수": 15044, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "경상남도", "시군구": "의령군", "총인구수": 24531, "고령인구수": 11216, "대형병원수": 0, "의과전문의수": 4 },
+            { "시도": "경상남도", "시군구": "창녕군", "총인구수": 54445, "고령인구수": 22415, "대형병원수": 0, "의과전문의수": 11 },
+            { "시도": "경상남도", "시군구": "하동군", "총인구수": 39596, "고령인구수": 17739, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "경상남도", "시군구": "함안군", "총인구수": 56867, "고령인구수": 19771, "대형병원수": 0, "의과전문의수": 7 },
+            { "시도": "경상남도", "시군구": "함양군", "총인구수": 35141, "고령인구수": 14871, "대형병원수": 0, "의과전문의수": 8 },
+            { "시도": "경상남도", "시군구": "합천군", "총인구수": 38854, "고령인구수": 18921, "대형병원수": 0, "의과전문의수": 6 },
+            { "시도": "경상북도", "시군구": "고령군", "총인구수": 29545, "고령인구수": 12167, "대형병원수": 0, "의과전문의수": 4 },
+            { "시도": "경상북도", "시군구": "봉화군", "총인구수": 28122, "고령인구수": 13123, "대형병원수": 0, "의과전문의수": 5 },
+            { "시도": "경상북도", "시군구": "성주군", "총인구수": 40461, "고령인구수": 17243, "대형병원수": 0, "의과전문의수": 3 },
+            { "시도": "경상북도", "시군구": "영덕군", "총인구수": 32560, "고령인구수": 14945, "대형병원수": 0, "의과전문의수": 8 },
+            { "시도": "경상북도", "시군구": "영양군", "총인구수": 15972, "고령인구수": 7035, "대형병원수": 0, "의과전문의수": 2 },
+            { "시도": "경상북도", "시군구": "영주시", "총인구수": 96440, "고령인구수": 33229, "대형병원수": 1, "의과전문의수": 35 },
+            { "시도": "경상북도", "시군구": "영천시", "총인구수": 94107, "REMOVED_PART": 34662, "대형병원수": 1, "의과전문의수": 19 },
+            { "시도": "경상북도", "시군구": "예천군", "총인구수": 53422, "고령인구수": 18847, "대형병원수": 0, "의과전문의수": 10 },
+            { "시도": "경상북도", "시군구": "울릉군", "총인구수": 8768, "고령인구수": 2900, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "경상북도", "시군구": "울진군", "총인구수": 46195, "고령인구수": 15934, "대형병원수": 0, "의과전문의수": 24 },
+            { "시도": "경상북도", "시군구": "의성군", "총인구수": 47952, "고령인구수": 24027, "대형병원수": 0, "의과전문의수": 6 },
+            { "시도": "경상북도", "시군구": "청도군", "총인구수": 40021, "고령인구수": 19045, "대형병원수": 0, "의과전문의수": 7 },
+            { "시도": "경상북도", "시군구": "청송군", "총인구수": 24020, "고령인구수": 10843, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "대구광역시", "시군구": "군위군", "총인구수": 22622, "고령인구수": 11296, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "인천광역시", "시군구": "강화군", "총인구수": 69681, "고령인구수": 29163, "대형병원수": 1, "의과전문의수": 19 },
+            { "시도": "인천광역시", "시군구": "옹진군", "총인구수": 19340, "고령인구수": 7265, "대형병원수": 0, "의과전문의수": 3 },
+            { "시도": "전라남도", "시군구": "강진군", "총인구수": 31666, "고령인구수": 13064, "대형병원수": 0, "의과전문의수": 14 },
+            { "시도": "전라남도", "시군구": "고흥군", "총인구수": 58976, "고령인구수": 28413, "대형병원수": 0, "의과전문의수": 26 },
+            { "시도": "전라남도", "시군구": "곡성군", "총인구수": 27657, "고령인구수": 11583, "대형병원수": 0, "의과전문의수": 7 },
+            { "시도": "전라남도", "시군구": "구례군", "총인구수": 24337, "고령인구수": 10138, "대형병원수": 0, "의과전문의수": 5 },
+            { "시도": "전라남도", "시군구": "담양군", "총인구수": 44031, "고령인구수": 16914, "대형병원수": 0, "의과전문의수": 7 },
+            { "시도": "전라남도", "시군구": "보성군", "총인구수": 37559, "고령인구수": 16869, "대형병원수": 0, "의과전문의수": 15 },
+            { "시도": "전라남도", "시군구": "신안군", "총인구수": 42319, "고령인구수": 16501, "대형병원수": 0, "의과전문의수": 2 },
+            { "시도": "전라남도", "시군구": "영광군", "총인구수": 53902, "고령인구수": 17674, "대형병원수": 0, "의과전문의수": 33 },
+            { "시도": "전라남도", "시군구": "영암군", "총인구수": 50076, "고령인구수": 16430, "대형병원수": 0, "의과전문의수": 10 },
+            { "시도": "전라남도", "시군구": "완도군", "총인구수": 44175, "고령인구수": 17538, "대형병원수": 0, "의과전문의수": 7 },
+            { "시도": "전라남도", "시군구": "장성군", "총인구수": 43095, "고령인구수": 15429, "대형병원수": 0, "의과전문의수": 12 },
+            { "시도": "전라남도", "시군구": "장흥군", "총인구수": 33952, "고령인구수": 13971, "대형병원수": 0, "의과전문의수": 18 },
+            { "시도": "전라남도", "시군구": "진도군", "총인구수": 27882, "고령인구수": 11249, "대형병원수": 0, "의과전문의수": 7 },
+            { "시도": "전라남도", "시군구": "함평군", "총인구수": 29601, "고령인구수": 12736, "대형병원수": 0, "의과전문의수": 17 },
+            { "시도": "전라남도", "시군구": "해남군", "총인구수": 62027, "고령인구수": 24626, "대형병원수": 0, "의과전문의수": 50 },
+            { "시도": "전북특별자치도", "시군구": "김제시", "총인구수": 81631, "고령인구수": 30000, "대형병원수": 0, "의과전문의수": 19 },
+            { "시도": "전북특별자치도", "시군구": "무주군", "총인구수": 23326, "고령인구수": 9356, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "전북특별자치도", "시군구": "순창군", "총인구수": 27584, "고령인구수": 10831, "대형병원수": 0, "의과전문의수": 1 },
+            { "시도": "전북특별자치도", "시군구": "임실군", "총인구수": 25342, "고령인구수": 11198, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "전북특별자치도", "시군구": "장수군", "총인구수": 21169, "고령인구수": 8755, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "전북특별자치도", "시군구": "진안군", "총인구수": 24689, "고령인구수": 10514, "대형병원수": 0, "의과전문의수": 12 },
+            { "시도": "충청남도", "시군구": "공주시", "총인구수": 99757, "고령인구수": 34013, "대형병원수": 1, "의과전문의수": 26 },
+            { "시도": "충청남도", "시군구": "금산군", "총인구수": 48939, "고령인구수": 19220, "대형병원수": 0, "의과전문의수": 5 },
+            { "시도": "충청남도", "시군구": "논산시", "총인구수": 105977, "고령인구수": 36530, "대형병원수": 1, "의과전문의수": 69 },
+            { "시도": "충청남도", "시군구": "보령시", "총인구수": 91260, "고령인구수": 31418, "대형병원수": 1, "의과전문의수": 27 },
+            { "시도": "충청남도", "시군구": "부여군", "총인구수": 57762, "고령인구수": 25613, "대형병원수": 0, "의과전문의수": 8 },
+            { "시도": "충청남도", "시군구": "서천군", "총인구수": 46761, "고령인구수": 20945, "대형병원수": 0, "의과전문의수": 3 },
+            { "시도": "충청남도", "시군구": "예산군", "총인구수": 78318, "고령인구수": 29283, "대형병원수": 1, "의과전문의수": 28 },
+            { "시도": "충청남도", "시군구": "청양군", "총인구수": 30051, "고령인구수": 12963, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "충청남도", "시군구": "태안군", "총인구수": 59039, "고령인구수": 24025, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "충청북도", "시군구": "괴산군", "총인구수": 37415, "고령인구수": 16412, "대형병원수": 0, "의과전문의수": 17 },
+            { "시도": "충청북도", "시군구": "단양군", "총인구수": 26628, "고령인구수": 11286, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "충청북도", "시군구": "보은군", "총인구수": 31181, "고령인구수": 13525, "대형병원수": 0, "의과전문의수": 5 },
+            { "시도": "충청북도", "시군구": "영동군", "총인구수": 43011, "고령인구수": 17768, "대형병원수": 0, "의과전문의수": 11 },
+            { "시도": "강원특별자치도", "시군구": "강릉시", "총인구수": 205666, "고령인구수": 58369, "대형병원수": 4, "의과전문의수": 239 },
+            { "시도": "강원특별자치도", "시군구": "동해시", "총인구수": 85589, "고령인구수": 23433, "대형병원수": 2, "의과전문의수": 35 },
+            { "시도": "강원특별자치도", "시군구": "삼척시", "총인구수": 60294, "고령인구수": 19952, "대형병원수": 1, "의과전문의수": 34 },
+            { "시도": "강원특별자치도", "시군구": "속초시", "총인구수": 78893, "고령인구수": 21146, "대형병원수": 2, "의과전문의수": 37 },
+            { "시도": "강원특별자치도", "시군구": "영월군", "총인구수": 35714, "고령인구수": 14054, "대형병원수": 1, "의과전문의수": 21 },
+            { "시도": "강원특별자치도", "시군구": "태백시", "총인구수": 36811, "고령인구수": 12421, "대형병원수": 1, "의과전문의수": 22 },
+            { "시도": "강원특별자치도", "시군구": "홍천군", "총인구수": 65849, "고령인구수": 24363, "대형병원수": 1, "의과전문의수": 38 },
+            { "시도": "경기도", "시군구": "고양시일산동구", "총인구수": 298269, "고령인구수": 55225, "대형병원수": 4, "의과전문의수": 724 },
+            { "시도": "경기도", "시군구": "부천시원미구", "총인구수": 382339, "고령인구수": 77244, "대형병원수": 4, "의과전문의수": 537 },
+            { "시도": "경기도", "시군구": "성남시분당구", "총인구수": 467641, "고령인구수": 79863, "대형병원수": 4, "의과전문의수": 1205 },
+            { "시도": "경기도", "시군구": "수원시팔달구", "총인구수": 193401, "고령인구수": 36762, "대형병원수": 3, "의과전문의수": 465 },
+            { "시도": "경기도", "시군구": "안산시단원구", "총인구수": 288467, "고령인구수": 49350, "대형병원수": 3, "의과전문의수": 462 },
+            { "시도": "경기도", "시군구": "포천시", "총인구수": 140468, "고령인구수": 41261, "대형병원수": 2, "의과전문의수": 104 },
+            { "시도": "경상남도", "시군구": "진주시", "총인구수": 334651, "고령인구수": 76620, "대형병원수": 4, "의과전문의수": 412 },
+            { "시도": "경상남도", "시군구": "창원시마산합포구", "총인구수": 174487, "고령인구수": 49425, "대형병원수": 3, "의과전문의수": 105 },
+            { "시도": "경상남도", "시군구": "창원시마산회원구", "총인구수": 174175, "고령인구수": 45102, "대형병원수": 2, "의과전문의수": 258 },
+            { "시도": "경상북도", "시군구": "김천시", "총인구수": 132740, "고령인구수": 39731, "대형병원수": 2, "의과전문의수": 77 },
+            { "시도": "경상북도", "시군구": "문경시", "총인구수": 64774, "고령인구수": 25279, "대형병원수": 1, "의과전문의수": 38 },
+            { "시도": "경상북도", "시군구": "상주시", "총인구수": 89228, "고령인구수": 35206, "대형병원수": 2, "의과전문의수": 36 },
+            { "시도": "경상북도", "시군구": "안동시", "총인구수": 151864, "고령인구수": 46593, "대형병원수": 3, "의과전문의수": 185 },
+            { "시도": "경상북도", "시군구": "포항시남구", "총인구수": 212298, "고령인구수": 54819, "대형병원수": 3, "의과전문의수": 282 },
+            { "시도": "광주광역시", "시군구": "동구", "총인구수": 105200, "고령인구수": 26334, "대형병원수": 0, "의과전문의수": 418 },
+            { "시도": "대구광역시", "시군구": "남구", "총인구수": 141344, "고령인구수": 40203, "대형병원수": 3, "의과전문의수": 448 },
+            { "시도": "대구광역시", "시군구": "달서구", "총인구수": 513399, "고령인구수": 111111, "대형병원수": 6, "의과전문의수": 614 },
+            { "시도": "대구광역시", "시군구": "서구", "총인구수": 163508, "고령인구수": 48739, "대형병원수": 2, "의과전문의수": 131 },
+            { "시도": "대구광역시", "시군구": "중구", "총인구수": 101754, "고령인구수": 18811, "대형병원수": 3, "의과전문의수": 388 },
+            { "시도": "대전광역시", "시군구": "중구", "총인구수": 224273, "고령인구수": 56540, "대형병원수": 3, "의과전문의수": 459 },
+            { "시도": "부산광역시", "시군구": "동구", "총인구수": 83354, "고령인구수": 26547, "대형병원수": 3, "의과전문의수": 192 },
+            { "시도": "부산광역시", "시군구": "동래구", "총인구수": 271097, "고령인구수": 65555, "대형병원수": 4, "의과전문의수": 270 },
+            { "시도": "부산광역시", "시군구": "서구", "총인구수": 101216, "고령인구수": 32261, "대형병원수": 4, "의과전문의수": 716 },
+            { "시도": "부산광역시", "시군구": "수영구", "총인구수": 168440, "고령인구수": 46555, "대형병원수": 3, "의과전문의수": 237 },
+            { "시도": "부산광역시", "시군구": "영도구", "총인구수": 100570, "고령인구수": 36257, "대형병원수": 2, "의과전문의수": 56 },
+            { "시도": "부산광역시", "시군구": "중구", "총인구수": 36306, "고령인구수": 12724, "대형병원수": 1, "의과전문의수": 70 },
+            { "시도": "서울특별시", "시군구": "강남구", "총인구수": 552830, "고령인구수": 97588, "대형병원수": 4, "의과전문의수": 1572 },
+            { "시도": "서울특별시", "시군구": "동대문구", "총인구수": 352848, "고령인구수": 74629, "대형병원수": 4, "의과전문의수": 460 },
+            { "시도": "서울특별시", "시군구": "서대문구", "총인구수": 299810, "고령인구수": 63351, "대형병원수": 2, "의과전문의수": 858 },
+            { "시도": "서울특별시", "시군구": "영등포구", "총인구수": 371867, "고령인구수": 72898, "대형병원수": 7, "의과전문의수": 601 },
+            { "시도": "서울특별시", "시군구": "종로구", "총인구수": 136318, "고령인구수": 31263, "대형병원수": 4, "의과전문의수": 1131 },
+            { "시도": "서울특별시", "시군구": "중구", "총인구수": 117558, "고령인구수": 27701, "대형병원수": 1, "의과전문의수": 186 },
+            { "시도": "전라남도", "시군구": "화순군", "총인구수": 59909, "고령인구수": 19853, "대형병원수": 0, "의과전문의수": 169 },
+            { "시도": "전북특별자치도", "시군구": "고창군", "총인구수": 50071, "고령인구수": 20870, "대형병원수": 1, "의과전문의수": 29 },
+            { "시도": "전북특별자치도", "시군구": "남원시", "총인구수": 73812, "고령인구수": 26161, "대형병원수": 1, "의과전문의수": 37 },
+            { "시도": "전북특별자치도", "시군구": "부안군", "총인구수": 46946, "고령인구수": 19234, "대형병원수": 1, "의과전문의수": 19 },
+            { "시도": "전북특별자치도", "시군구": "정읍시", "총인구수": 100738, "고령인구수": 34282, "대형병원수": 2, "의과전문의수": 56 },
+            { "시도": "충청남도", "시군구": "천안시동남구", "총인구수": 263653, "고령인구수": 52621, "대형병원수": 3, "의과전문의수": 488 },
+            { "시도": "충청북도", "시군구": "옥천군", "총인구수": 50547, "고령인구수": 18901, "대형병원수": 1, "의과전문의수": 15 },
+            { "시도": "충청북도", "시군구": "제천시", "총인구수": 128192, "고령인구수": 38381, "대형병원수": 2, "의과전문의수": 64 },
+            { "시도": "충청북도", "시군구": "청주시서원구", "총인구수": 187779, "고령인구수": 39755, "대형병원수": 2, "의과전문의수": 252 },
+            { "시도": "강원특별자치도", "시군구": "양구군", "총인구수": 20372, "고령인구수": 5891, "대형병원수": 0, "의과전문의수": 14 },
+            { "시도": "강원특별자치도", "시군구": "원주시", "총인구수": 364811, "고령인구수": 76544, "대형병원수": 2, "의과전문의수": 331 },
+            { "시도": "강원특별자치도", "시군구": "인제군", "총인구수": 30771, "고령인구수": 8679, "대형병원수": 0, "의과전문의수": 5 },
+            { "시도": "강원특별자치도", "시군구": "춘천시", "총인구수": 285027, "고령인구수": 66488, "대형병원수": 2, "의과전문의수": 325 },
+            { "시도": "경기도", "시군구": "고양시덕양구", "총인구수": 483048, "고령인구수": 96407, "대형병원수": 2, "의과전문의수": 247 },
+            { "시도": "경기도", "시군구": "고양시일산서구", "총인구수": 276121, "고령인구수": 53246, "대형병원수": 1, "의과전문의수": 188 },
+            { "시도": "경기도", "시군구": "과천시", "총인구수": 80832, "고령인구수": 13205, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "경기도", "시군구": "광명시", "총인구수": 303666, "고령인구수": 57121, "대형병원수": 2, "의과전문의수": 295 },
+            { "시도": "경기도", "시군구": "광주시", "총인구수": 399111, "고령인구수": 78180, "대형병원수": 1, "의과전문의수": 0 },
+            { "시도": "경기도", "시군구": "구리시", "총인구수": 187782, "고령인구수": 37208, "대형병원수": 1, "의과전문의수": 207 },
+            { "시도": "경기도", "시군구": "군포시", "총인구수": 249462, "고령인구수": 51815, "대형병원수": 2, "의과전문의수": 163 },
+            { "시도": "경기도", "시군구": "김포시", "총인구수": 484042, "고령인구수": 84689, "대형병원수": 2, "의과전문의수": 235 },
+            { "시도": "경기도", "시군구": "남양주시", "총인구수": 727440, "고령인구수": 142550, "대형병원수": 2, "의과전문의수": 252 },
+            { "시도": "경기도", "시군구": "동두천시", "총인구수": 86265, "고령인구수": 24403, "대형병원수": 0, "의과전문의수": 21 },
+            { "시도": "경기도", "시군구": "부천시소사구", "총인구수": 224202, "고령인구수": 49763, "대형병원수": 1, "의과전문의수": 118 },
+            { "시도": "경기도", "시군구": "부천시오정구", "총인구수": 148912, "고령인구수": 34356, "대형병원수": 1, "의과전문의수": 31 },
+            { "시도": "경기도", "시군구": "성남시수정구", "총인구수": 234639, "고령인구수": 50865, "대형병원수": 2, "의과전문의수": 129 },
+            { "시도": "경기도", "시군구": "성남시중원구", "총인구수": 200064, "고령인구수": 45149, "대형병원수": 1, "의과전문의수": 40 },
+            { "시도": "경기도", "시군구": "수원시권선구", "총인구수": 360286, "고령인구수": 61494, "대형병원수": 2, "의과전문의수": 181 },
+            { "시도": "경기도", "시군구": "수원시영통구", "총인구수": 362099, "고령인구수": 39646, "대형병원수": 1, "의과전문의수": 509 },
+            { "시도": "경기도", "시군구": "수원시장안구", "총인구수": 269984, "고령인구수": 50880, "대형병원수": 1, "의과전문의수": 52 },
+            { "시도": "경기도", "시군구": "시흥시", "총인구수": 514831, "고령인구수": 74706, "대형병원수": 3, "의과전문의수": 190 },
+            { "시도": "경기도", "시군구": "안산시상록구", "총인구수": 320773, "고령인구수": 58305, "대형병원수": 2, "의과전문의수": 112 },
+            { "시도": "경기도", "시군구": "안성시", "총인구수": 198785, "고령인구수": 45277, "대형병원수": 2, "의과전문의수": 63 },
+            { "시도": "경기도", "시군구": "안양시동안구", "총인구수": 328594, "고령인구수": 55606, "대형병원수": 1, "의과전문의수": 304 },
+            { "시도": "경기도", "시군구": "안양시만안구", "총인구수": 233711, "고령인구수": 53177, "대형병원수": 2, "의과전문의수": 100 },
+            { "시도": "경기도", "시군구": "양주시", "총인구수": 297226, "고령인구수": 56892, "대형병원수": 0, "의과전문의수": 69 },
+            { "시도": "경기도", "시군구": "여주시", "총인구수": 113506, "고령인구수": 33425, "대형병원수": 1, "의과전문의수": 33 },
+            { "시도": "경기도", "시군구": "오산시", "총인구수": 253590, "고령인구수": 34066, "대형병원수": 2, "의과전문의수": 100 },
+            { "시도": "경기도", "시군구": "용인시기흥구", "총인구수": 434590, "고령인구수": 76321, "대형병원수": 2, "의과전문의수": 306 },
+            { "시도": "경기도", "시군구": "용인시수지구", "총인구수": 369230, "고령인구수": 59970, "대형병원수": 0, "의과전문의수": 39 },
+            { "시도": "경기도", "시군구": "용인시처인구", "총인구수": 286391, "고령인구수": 54963, "대형병원수": 2, "의과전문의수": 87 },
+            { "시도": "경기도", "시군구": "의왕시", "총인구수": 164221, "고령인구수": 32901, "대형병원수": 0, "의과전문의수": 2 },
+            { "시도": "경기도", "시군구": "의정부시", "총인구수": 461917, "고령인구수": 96398, "대형병원수": 5, "의과전문의수": 467 },
+            { "시도": "경기도", "시군구": "이천시", "총인구수": 224740, "고령인구수": 43697, "대형병원수": 1, "의과전문의수": 56 },
+            { "시도": "경기도", "시군구": "파주시", "총인구수": 533387, "고령인구수": 94456, "대형병원수": 2, "의과전문의수": 143 },
+            { "시도": "경기도", "시군구": "평택시", "총인구수": 619670, "고령인구수": 93532, "대형병원수": 4, "의과전문의수": 279 },
+            { "시도": "경기도", "시군구": "하남시", "총인구수": 327495, "고령인구수": 56386, "대형병원수": 0, "의과전문의수": 54 },
+            { "시도": "경기도", "시군구": "화성시동탄구", "총인구수": 428989, "고령인구수": 30404, "대형병원수": 1, "의과전문의수": 293 },
+            { "시도": "경기도", "시군구": "화성시만세구", "총인구수": 234482, "고령인구수": 43296, "대형병원수": 2, "의과전문의수": 65 },
+            { "시도": "경기도", "시군구": "화성시병점구", "총인구수": 174794, "고령인구수": 21763, "대형병원수": 1, "의과전문의수": 30 },
+            { "시도": "경기도", "시군구": "화성시효행구", "총인구수": 160481, "고령인구수": 25627, "대형병원수": 0, "의과전문의수": 8 },
+            { "시도": "경상남도", "시군구": "거제시", "총인구수": 229029, "고령인구수": 40573, "대형병원수": 3, "의과전문의수": 81 },
+            { "시도": "경상남도", "시군구": "김해시", "총인구수": 532777, "고령인구수": 90747, "대형병원수": 4, "의과전문의수": 252 },
+            { "시도": "경상남도", "시군구": "사천시", "총인구수": 107882, "고령인구수": 30096, "대형병원수": 0, "의과전문의수": 46 },
+            { "시도": "경상남도", "시군구": "양산시", "총인구수": 361389, "고령인구수": 71786, "대형병원수": 3, "의과전문의수": 362 },
+            { "시도": "경상남도", "시군구": "창원시", "총인구수": 986273, "고령인구수": 213013, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "경상남도", "시군구": "창원시성산구", "총인구수": 245292, "고령인구수": 37569, "대형병원수": 2, "의과전문의수": 204 },
+            { "시도": "경상남도", "시군구": "창원시의창구", "총인구수": 209377, "고령인구수": 43425, "대형병원수": 2, "의과전문의수": 277 },
+            { "시도": "경상남도", "시군구": "창원시진해구", "총인구수": 182942, "고령인구수": 37492, "대형병원수": 1, "의과전문의수": 62 },
+            { "시도": "경상남도", "시군구": "통영시", "총인구수": 115890, "고령인구수": 32906, "대형병원수": 1, "의과전문의수": 48 },
+            { "시도": "경상북도", "시군구": "경산시", "총인구수": 263406, "고령인구수": 59813, "대형병원수": 2, "의과전문의수": 97 },
+            { "시도": "경상북도", "시군구": "경주시", "총인구수": 243051, "고령인구수": 72258, "대형병원수": 1, "의과전문의수": 137 },
+            { "시도": "경상북도", "시군구": "구미시", "총인구수": 402726, "고령인구수": 60057, "대형병원수": 3, "의과전문의수": 212 },
+            { "시도": "경상북도", "시군구": "칠곡군", "총인구수": 103537, "고령인구수": 23770, "대형병원수": 0, "의과전문의수": 7 },
+            { "시도": "경상북도", "시군구": "포항시", "총인구수": 487008, "고령인구수": 120800, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "경상북도", "시군구": "포항시북구", "총인구수": 274710, "고령인구수": 65981, "대형병원수": 2, "의과전문의수": 106 },
+            { "시도": "광주광역시", "시군구": "광산구", "총인구수": 383206, "고령인구수": 52385, "대형병원수": 0, "의과전문의수": 348 },
+            { "시도": "광주광역시", "시군구": "남구", "총인구수": 205647, "고령인구수": 47751, "대형병원수": 0, "의과전문의수": 211 },
+            { "시도": "광주광역시", "시군구": "북구", "총인구수": 416783, "고령인구수": 86558, "대형병원수": 0, "의과전문의수": 326 },
+            { "시도": "광주광역시", "시군구": "서구", "총인구수": 274624, "고령인구수": 55087, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "대구광역시", "시군구": "달성군", "총인구수": 252000, "고령인구수": 47722, "대형병원수": 0, "의과전문의수": 32 },
+            { "시도": "대구광역시", "시군구": "동구", "총인구수": 338476, "고령인구수": 86908, "대형병원수": 2, "의과전문의수": 205 },
+            { "시도": "대구광역시", "시군구": "북구", "총인구수": 406915, "고령인구수": 85869, "대형병원수": 2, "의과전문의수": 329 },
+            { "시도": "대구광역시", "시군구": "수성구", "총인구수": 408147, "고령인구수": 85343, "대형병원수": 1, "의과전문의수": 122 },
+            { "시도": "대전광역시", "시군구": "대덕구", "총인구수": 164047, "고령인구수": 38941, "대형병원수": 2, "의과전문의수": 89 },
+            { "시도": "대전광역시", "시군구": "동구", "총인구수": 218251, "고령인구수": 54207, "대형병원수": 1, "의과전문의수": 66 },
+            { "시도": "대전광역시", "시군구": "서구", "총인구수": 464359, "고령인구수": 84043, "대형병원수": 3, "의과전문의수": 537 },
+            { "시도": "대전광역시", "시군구": "유성구", "총인구수": 371104, "고령인구수": 51566, "대형병원수": 1, "의과전문의수": 217 },
+            { "시도": "부산광역시", "시군구": "강서구", "총인구수": 153555, "고령인구수": 23798, "대형병원수": 0, "의과전문의수": 32 },
+            { "시도": "부산광역시", "시군구": "금정구", "총인구수": 205672, "고령인구수": 60192, "대형병원수": 0, "의과전문의수": 84 },
+            { "시도": "부산광역시", "시군구": "기장군", "총인구수": 175262, "고령인구수": 37583, "대형병원수": 1, "의과전문의수": 92 },
+            { "시도": "부산광역시", "시군구": "남구", "총인구수": 254413, "고령인구수": 65555, "대형병원수": 1, "의과전문의수": 106 },
+            { "시도": "부산광역시", "시군구": "부산진구", "총인구수": 364912, "고령인구수": 89706, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "부산광역시", "시군구": "북구", "총인구수": 260736, "고령인구수": 69412, "대형병원수": 2, "의과전문의수": 180 },
+            { "시도": "부산광역시", "시군구": "사상구", "총인구수": 192475, "고령인구수": 53336, "대형병원수": 2, "의과전문의수": 158 },
+            { "시도": "부산광역시", "시군구": "사하구", "총인구수": 282159, "고령인구수": 78434, "대형병원수": 0, "의과전문의수": 114 },
+            { "시도": "부산광역시", "시군구": "연제구", "총인구수": 211464, "고령인구수": 52516, "대형병원수": 1, "의과전문의수": 123 },
+            { "시도": "부산광역시", "시군구": "해운대구", "총인구수": 370739, "고령인구수": 89956, "대형병원수": 2, "의과전문의수": 402 },
+            { "시도": "서울특별시", "시군구": "강동구", "총인구수": 499011, "고령인구수": 100813, "대형병원수": 3, "의과전문의수": 644 },
+            { "시도": "서울특별시", "시군구": "강북구", "총인구수": 278041, "고령인구수": 75944, "대형병원수": 2, "의과전문의수": 101 },
+            { "시도": "서울특별시", "시군구": "강서구", "총인구수": 548515, "고령인구수": 116416, "대형병원수": 4, "의과전문의수": 524 },
+            { "시도": "서울특별시", "시군구": "관악구", "총인구수": 477797, "고령인구수": 94060, "대형병원수": 1, "의과전문의수": 157 },
+            { "시도": "서울특별시", "시군구": "광진구", "총인구수": 330905, "고령인구수": 64022, "대형병원수": 2, "의과전문의수": 302 },
+            { "시도": "서울특별시", "시군구": "구로구", "총인구수": 382633, "고령인구수": 88085, "대형병원수": 2, "의과전문의수": 435 },
+            { "시도": "서울특별시", "시군구": "금천구", "총인구수": 222503, "고령인구수": 51091, "대형병원수": 1, "의과전문의수": 66 },
+            { "시도": "서울특별시", "시군구": "노원구", "총인구수": 481053, "고령인구수": 107095, "대형병원수": 3, "의과전문의수": 428 },
+            { "시도": "서울특별시", "시군구": "도봉구", "총인구수": 298225, "고령인구수": 80304, "대형병원수": 1, "의과전문의수": 137 },
+            { "시도": "서울특별시", "시군구": "동작구", "총인구수": 371999, "고령인구수": 77106, "대형병원수": 2, "의과전문의수": 515 },
+            { "시도": "서울특별시", "시군구": "마포구", "총인구수": 356487, "고령인구수": 62999, "대형병원수": 0, "의과전문의수": 42 },
+            { "시도": "서울특별시", "시군구": "서초구", "총인구수": 414383, "고령인구수": 73931, "대형병원수": 2, "의과전문의수": 743 },
+            { "시도": "서울특별시", "시군구": "성동구", "총인구수": 274517, "고령인구수": 54447, "대형병원수": 2, "의과전문의수": 253 },
+            { "시도": "서울특별시", "시군구": "성북구", "총인구수": 421762, "고령인구수": 89110, "대형병원수": 1, "의과전문의수": 393 },
+            { "시도": "서울특별시", "시군구": "송파구", "총인구수": 650258, "고령인구수": 123327, "대형병원수": 2, "의과전문의수": 1237 },
+            { "시도": "서울특별시", "시군구": "양천구", "총인구수": 421247, "고령인구수": 86569, "대형병원수": 3, "의과전문의수": 363 },
+            { "시도": "서울특별시", "시군구": "용산구", "총인구수": 199648, "고령인구수": 40120, "대형병원수": 1, "의과전문의수": 227 },
+            { "시도": "서울특별시", "시군구": "은평구", "총인구수": 453212, "고령인구수": 104893, "대형병원수": 2, "의과전문의수": 329 },
+            { "시도": "서울특별시", "시군구": "중랑구", "총인구수": 376386, "고령인구수": 90782, "대형병원수": 3, "의과전문의수": 283 },
+            { "시도": "울산광역시", "시군구": "남구", "총인구수": 304337, "고령인구수": 56898, "대형병원수": 3, "의과전문의수": 278 },
+            { "시도": "울산광역시", "시군구": "동구", "총인구수": 147756, "고령인구수": 30798, "대형병원수": 0, "의과전문의수": 230 },
+            { "시도": "울산광역시", "시군구": "북구", "총인구수": 213685, "고령인구수": 29555, "대형병원수": 2, "의과전문의수": 80 },
+            { "시도": "울산광역시", "시군구": "울주군", "총인구수": 218285, "고령인구수": 48168, "대형병원수": 1, "의과전문의수": 30 },
+            { "시도": "울산광역시", "시군구": "중구", "총인구수": 203026, "고령인구수": 46142, "대형병원수": 2, "의과전문의수": 122 },
+            { "시도": "인천광역시", "시군구": "계양구", "총인구수": 276309, "고령인구수": 58847, "대형병원수": 2, "의과전문의수": 238 },
+            { "시도": "인천광역시", "시군구": "남동구", "총인구수": 479149, "고령인구수": 102290, "대형병원수": 2, "의과전문의수": 397 },
+            { "시도": "인천광역시", "시군구": "동구", "총인구수": 57926, "고령인구수": 16881, "대형병원수": 0, "의과전문의수": 66 },
+            { "시도": "인천광역시", "시군구": "미추홀구", "총인구수": 418211, "고령인구수": 92292, "대형병원수": 2, "의과전문의수": 288 },
+            { "시도": "인천광역시", "시군구": "부평구", "총인구수": 488191, "고령인구수": 103325, "대형병원수": 3, "의과전문의수": 416 },
+            { "시도": "인천광역시", "시군구": "서구", "총인구수": 662875, "고령인구수": 98623, "대형병원수": 0, "의과전문의수": 410 },
+            { "시도": "인천광역시", "시군구": "연수구", "총인구수": 410290, "고령인구수": 60007, "대형병원수": 2, "의과전문의수": 89 },
+            { "시도": "인천광역시", "시군구": "중구", "총인구수": 179030, "고령인구수": 30100, "대형병원수": 0, "의과전문의수": 296 },
+            { "시도": "전라남도", "시군구": "광양시", "총인구수": 155975, "고령인구수": 28148, "대형병원수": 0, "의과전문의수": 41 },
+            { "시도": "전라남도", "시군구": "나주시", "총인구수": 116691, "고령인구수": 30728, "대형병원수": 0, "의과전문의수": 48 },
+            { "시도": "전라남도", "시군구": "목포시", "총인구수": 199524, "고령인구수": 47425, "대형병원수": 0, "의과전문의수": 265 },
+            { "시도": "전라남도", "시군구": "무안군", "총인구수": 95659, "고령인구수": 20837, "대형병원수": 0, "의과전문의수": 21 },
+            { "시도": "전라남도", "시군구": "순천시", "총인구수": 274131, "고령인구수": 58612, "대형병원수": 0, "의과전문의수": 291 },
+            { "시도": "전라남도", "시군구": "여수시", "총인구수": 260502, "고령인구수": 68279, "대형병원수": 0, "의과전문의수": 191 },
+            { "시도": "전북특별자치도", "시군구": "군산시", "총인구수": 255591, "고령인구수": 64219, "대형병원수": 2, "의과전문의수": 119 },
+            { "시도": "전북특별자치도", "시군구": "완주군", "총인구수": 100102, "고령인구수": 27560, "대형병원수": 0, "의과전문의수": 5 },
+            { "시도": "전북특별자치도", "시군구": "익산시", "총인구수": 266758, "고령인구수": 70191, "대형병원수": 2, "의과전문의수": 232 },
+            { "시도": "전북특별자치도", "시군구": "전주시", "총인구수": 620874, "고령인구수": 126989, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "전북특별자치도", "시군구": "전주시덕진구", "총인구수": 307345, "고령인구수": 57541, "대형병원수": 3, "의과전문의수": 0 },
+            { "시도": "전북특별자치도", "시군구": "전주시완산구", "총인구수": 313529, "고령인구수": 69448, "대형병원수": 2, "의과전문의수": 0 },
+            { "시도": "제주특별자치도", "시군구": "서귀포시", "총인구수": 178669, "고령인구수": 44626, "대형병원수": 1, "의과전문의수": 55 },
+            { "시도": "제주특별자치도", "시군구": "제주시", "총인구수": 484123, "고령인구수": 92096, "대형병원수": 5, "의과전문의수": 391 },
+            { "시도": "충청남도", "시군구": "계룡시", "총인구수": 45959, "고령인구수": 7812, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "충청남도", "시군구": "당진시", "총인구수": 172400, "고령인구수": 40186, "대형병원수": 1, "의과전문의수": 46 },
+            { "시도": "충청남도", "시군구": "서산시", "총인구수": 171136, "고령인구수": 41975, "대형병원수": 2, "의과전문의수": 76 },
+            { "시도": "충청남도", "시군구": "아산시", "총인구수": 363678, "고령인구수": 59018, "대형병원수": 1, "의과전문의수": 133 },
+            { "시도": "충청남도", "시군구": "천안시", "총인구수": 666182, "고령인구수": 105051, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "충청남도", "시군구": "천안시서북구", "총인구수": 402529, "고령인구수": 52430, "대형병원수": 1, "의과전문의수": 183 },
+            { "시도": "충청남도", "시군구": "홍성군", "총인구수": 101566, "고령인구수": 29222, "대형병원수": 1, "의과전문의수": 51 },
+            { "시도": "충청북도", "시군구": "음성군", "총인구수": 95954, "고령인구수": 26403, "대형병원수": 1, "의과전문의수": 34 },
+            { "시도": "충청북도", "시군구": "증평군", "총인구수": 36741, "고령인구수": 8781, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "충청북도", "시군구": "진천군", "총인구수": 85569, "REMOVED_PART": 18464, "대형병원수": 1, "의과전문의수": 30 },
+            { "시도": "충청북도", "시군구": "청주시", "총인구수": 859571, "고령인구수": 157589, "대형병원수": 0, "의과전문의수": 0 },
+            { "시도": "충청북도", "시군구": "청주시상당구", "총인구수": 193079, "고령인구수": 40798, "대형병원수": 2, "의과전문의수": 163 },
+            { "시도": "충청북도", "시군구": "청주시청원구", "총인구수": 186088, "고령인구수": 33438, "대형병원수": 1, "의과전문의수": 121 },
+            { "시도": "충청북도", "시군구": "청주시흥덕구", "총인구수": 292625, "고령인구수": 43598, "대형병원수": 2, "의과전문의수": 133 },
+            { "시도": "충청북도", "시군구": "충주시", "총인구수": 205978, "고령인구수": 54980, "대형병원수": 2, "의과전문의수": 97 }
+        ];
+
+        // 탭 전환 시스템 함수 추가
+        function switchTab(tabName) {
+            const uploadPanel = document.getElementById('panel-upload');
+            const dashboardPanel = document.getElementById('panel-dashboard');
+            const uploadBtn = document.getElementById('tab-upload-btn');
+            const dashboardBtn = document.getElementById('tab-dashboard-btn');
+
+            if(tabName === 'upload') {
+                uploadPanel.classList.remove('hidden');
+                dashboardPanel.classList.add('hidden');
+                
+                uploadBtn.className = "border-b-2 border-blue-600 text-blue-600 px-4 py-2.5 text-sm font-bold flex items-center gap-2 transition focus:outline-none";
+                if(!dashboardBtn.disabled) {
+                    dashboardBtn.className = "border-b-2 border-transparent text-slate-500 hover:text-slate-700 px-4 py-2.5 text-sm font-medium flex items-center gap-2 transition focus:outline-none";
+                }
+            } else if(tabName === 'dashboard') {
+                if(dashboardBtn.disabled) return;
+                uploadPanel.classList.add('hidden');
+                dashboardPanel.classList.remove('hidden');
+
+                uploadBtn.className = "border-b-2 border-transparent text-slate-500 hover:text-slate-700 px-4 py-2.5 text-sm font-medium flex items-center gap-2 transition focus:outline-none";
+                dashboardBtn.className = "border-b-2 border-blue-600 text-blue-600 px-4 py-2.5 text-sm font-bold flex items-center gap-2 transition focus:outline-none";
+                
+                // 탭 이동 시 Plotly 차트 리사이즈 이슈 방지 리트리거
+                setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 50);
+            }
+        }
+
+        // 초기 바인딩 및 이벤트 설정
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            
+            document.getElementById('load-demo-btn').addEventListener('click', loadDemoData);
+            document.getElementById('merge-analyze-btn').addEventListener('click', startAnalysisPipeline);
+            document.getElementById('download-excel-btn').addEventListener('click', exportDatasetToExcel);
+            document.getElementById('k-slider').addEventListener('input', (e) => {
+                document.getElementById('k-value-display').innerText = e.target.value;
+                if (finalMergedDataset.length > 0) runKMeansAndRender(Number(e.target.value));
+            });
+            document.getElementById('sido-filter').addEventListener('change', (e) => {
+                filterAndRenderDashboard(e.target.value);
+            });
+
+            // 파일 체인지 리스너
+            setupFileListener('file-pop', 'status-pop', data => parsedPop = data);
+            setupFileListener('file-doc', 'status-doc', data => parsedDoc = data);
+            setupFileListener('file-general', 'status-general', data => parsedHospG = data);
+            setupFileListener('file-super', 'status-super', data => parsedHospS = data);
+        });
+
+        function setupFileListener(inputId, statusId, callback) {
+            document.getElementById(inputId).addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if(!file) return;
+                document.getElementById(statusId).innerText = "⏳ 읽는 중...";
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    try {
+                        const workbook = XLSX.read(evt.target.result, { type: 'binary' });
+                        const firstSheet = workbook.SheetNames[0];
+                        const data = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
+                        callback(data);
+                        document.getElementById(statusId).innerText = `✅ 완료 (${data.length}행)`;
+                        document.getElementById(statusId).className = "text-[10px] text-emerald-600 font-bold text-center";
+                    } catch(err) {
+                        document.getElementById(statusId).innerText = "❌ 오류 발생";
+                        document.getElementById(statusId).className = "text-[10px] text-red-500 font-bold text-center";
+                    }
+                };
+                reader.readAsBinaryString(file);
+            });
+        }
+
+        function unlockDashboardTab() {
+            const dashboardBtn = document.getElementById('tab-dashboard-btn');
+            dashboardBtn.disabled = false;
+            dashboardBtn.classList.remove('text-slate-400', 'cursor-not-allowed');
+            dashboardBtn.classList.add('text-slate-500', 'hover:text-slate-700');
+            // 자동으로 대시보드 창으로 화면 전환
+            switchTab('dashboard');
+        }
+
+        function loadDemoData() {
+            finalMergedDataset = demoDataset.map(row => {
+                let pop = row.총인구수 || 1;
+                let docCount = row.의과전문의수 || row["('의과전문의수')"] || 0;
+                return {
+                    ...row,
+                    의과전문의수: docCount,
+                    노약자_비율_pct: ((row.고령인구수 || 0) / pop) * 100,
+                    인구_10만명당_대형병원수: ((row.대형병원수 || 0) / pop) * 100000,
+                    인구_10만명당_전문의수: (docCount / pop) * 100000
+                };
+            });
+            initDashboardComponents();
+            unlockDashboardTab();
+        }
+
+        function startAnalysisPipeline() {
+            if(parsedPop.length===0 || parsedDoc.length===0 || parsedHospG.length===0 || parsedHospS.length===0) {
+                alert("4가지 연동 대상 엑셀 파일을 모두 업로드한 뒤 실행해 주세요. 또는 상단의 데모 기능을 이용하세요.");
+                return;
+            }
+            
+            finalMergedDataset = parsedPop.map(p => {
+                let sido = p["시도"] || p["시도명"] || "";
+                let sigungu = p["시군구"] || p["시군구명"] || "";
+                let pop = Number(p["총인구수"] || p["인구수"] || 1);
+                let elderly = Number(p["고령인구수"] || p["65세이상인구수"] || p["고령인구"] || 0);
+                
+                let docRow = parsedDoc.find(d => (d["시도"]===sido || d["시도명"]===sido) && (d["시군구"]===sigungu || d["시군구명"]===sigungu)) || {};
+                let docCount = Number(docRow["의과전문의수"] || docRow["전문의수"] || docRow["전문의"] || 0);
+
+                let gHosp = parsedHospG.filter(h => (h["시도"]===sido || h["시도명"]===sido) && (h["시군구"]===sigungu || h["시군구명"]===sigungu)).length;
+                let sHosp = parsedHospS.filter(h => (h["시도"]===sido || h["시도명"]===sido) && (h["시군구"]===sigungu || h["시군구명"]===sigungu)).length;
+                let totalHosp = gHosp + sHosp;
+
+                return {
+                    "시도": sido,
+                    "시군구": sigungu,
+                    "총인구수": pop,
+                    "고령인구수": elderly,
+                    "대형병원수": totalHosp,
+                    "의과전문의수": docCount,
+                    "노약자_비율_pct": (elderly / pop) * 100,
+                    "인구_10만명당_대형병원수": (totalHosp / pop) * 100000,
+                    "인구_10만명당_전문의수": (docCount / pop) * 100000
+                };
+            }).filter(r => r.시도 !== "");
+
+            initDashboardComponents();
+            unlockDashboardTab();
+        }
+
+        function initDashboardComponents() {
+            // 시도 필터 세팅
+            const filterSelect = document.getElementById('sido-filter');
+            filterSelect.innerHTML = '<option value="전체">전체 지역보기</option>';
+            const sidos = [...new Set(finalMergedDataset.map(r => r.시도))].sort();
+            sidos.forEach(s => {
+                filterSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+
+            filterAndRenderDashboard("전체");
+        }
+
+        function filterAndRenderDashboard(targetSido) {
+            let filtered = finalMergedDataset;
+            if(targetSido !== "전체") {
+                filtered = finalMergedDataset.filter(r => r.시도 === targetSido);
+            }
+            latestAnalyzedDataset = filtered;
+
+            // KPI 연산
+            let totalPop = filtered.reduce((a, b) => a + b.총인구수, 0);
+            let totalElderly = filtered.reduce((a, b) => a + b.고령인구수, 0);
+            let avgPct = filtered.length > 0 ? (filtered.reduce((a, b) => a + b.노약자_비율_pct, 0) / filtered.length) : 0;
+            let noHospPlaces = filtered.filter(r => r.대형병원수 === 0);
+
+            document.getElementById('kpi-total-pop').innerText = totalPop.toLocaleString() + " 명";
+            document.getElementById('kpi-total-elderly').innerText = totalElderly.toLocaleString() + " 명";
+            document.getElementById('kpi-avg-elderly-pct').innerText = avgPct.toFixed(2) + " %";
+            document.getElementById('kpi-no-hosp-count').innerText = noHospPlaces.length + " 곳";
+
+            // 위험지역 태그 출력
+            const alertBox = document.getElementById('no-hospital-alert-box');
+            const listContainer = document.getElementById('no-hospital-list-container');
+            if(noHospPlaces.length > 0) {
+                alertBox.classList.remove('hidden');
+                listContainer.innerHTML = "";
+                noHospPlaces.forEach(p => {
+                    listContainer.innerHTML += `<span class="bg-red-200/60 text-red-900 border border-red-300 text-[11px] font-semibold px-2 py-0.5 rounded-md">${p.시도} ${p.시군구}</span>`;
+                });
+            } else {
+                alertBox.classList.add('hidden');
+            }
+
+            // 차트 드로잉
+            renderTopBottomCharts(filtered);
+            
+            // 머신러닝 연동 실행
+            const k = Number(document.getElementById('k-slider').value);
+            runKMeansAndRender(k);
+        }
+
+        function renderTopBottomCharts(data) {
+            if(data.length === 0) return;
+            
+            let sortedHosp = [...data].sort((a,b) => b.인구_10만명당_대형병원수 - a.인구_10만명당_대형병원수);
+            let sortedDoc = [...data].sort((a,b) => b.인구_10만명당_전문의수 - a.인구_10만명당_전문의수);
+
+            let topBottomHosp = sortedHosp.slice(0, 5).concat(sortedHosp.slice(-5));
+            let topBottomDoc = sortedDoc.slice(0, 5).concat(sortedDoc.slice(-5));
+            topBottomHosp = [...new Set(topBottomHosp)];
+            topBottomDoc = [...new Set(topBottomDoc)];
+
+            const traceHosp = {
+                x: topBottomHosp.map(r => `${r.시도.slice(0,2)} ${r.시군구}`),
+                y: topBottomHosp.map(r => r.인구_10만명당_대형병원수),
+                type: 'bar',
+                marker: { color: '#f43f5e' }
+            };
+
+            const traceDoc = {
+                x: topBottomDoc.map(r => `${r.시도.slice(0,2)} ${r.시군구}`),
+                y: topBottomDoc.map(r => r.인구_10만명당_전문의수),
+                type: 'bar',
+                marker: { color: '#06b6d4' }
+            };
+
+            const layout = { margin: { t: 20, b: 60, l: 40, r: 20 }, font: { size: 10 } };
+            Plotly.newPlot('chart-hosp', [traceHosp], layout);
+            Plotly.newPlot('chart-doc', [traceDoc], layout);
+        }
+
+        // K-Means 머신러닝 모듈
+        function runKMeansAndRender(k) {
+            let data = latestAnalyzedDataset;
+            if(data.length === 0) return;
+
+            let features = data.map(r => [r.노약자_비율_pct, r.인구_10만명당_대형병원수, r.인구_10만명당_전문의수]);
+            
+            let means = [0, 0, 0];
+            let stds = [0, 0, 0];
+            for(let j=0; j<3; j++) {
+                let sum = features.reduce((a, b) => a + b[j], 0);
+                means[j] = sum / features.length;
+                let sqSum = features.reduce((a, b) => a + Math.pow(b[j] - means[j], 2), 0);
+                stds[j] = Math.sqrt(sqSum / features.length) || 1;
+            }
+
+            let scaled = features.map(f => [
+                (f[0] - means[0]) / stds[0],
+                (f[1] - means[1]) / stds[1],
+                (f[2] - means[2]) / stds[2]
+            ]);
+
+            let centroids = [];
+            for(let i=0; i<k; i++) {
+                let idx = Math.floor((i / k) * scaled.length);
+                centroids.push([...scaled[idx]]);
+            }
+
+            let assignments = new Array(scaled.length).fill(0);
+            
+            for(let iter=0; iter<10; iter++) {
+                for(let i=0; i<scaled.length; i++) {
+                    let minDist = Infinity;
+                    let bestCluster = 0;
+                    for(let c=0; c<k; c++) {
+                        let dist = Math.pow(scaled[i][0]-centroids[c][0], 2) +
+                                   Math.pow(scaled[i][1]-centroids[c][1], 2) +
+                                   Math.pow(scaled[i][2]-centroids[c][2], 2);
+                        if(dist < minDist) {
+                            minDist = dist;
+                            bestCluster = c;
+                        }
+                    }
+                    assignments[i] = bestCluster;
+                }
+
+                let newCentroids = Array.from({length: k}, () => [0,0,0]);
+                let counts = new Array(k).fill(0);
+                for(let i=0; i<scaled.length; i++) {
+                    let c = assignments[i];
+                    newCentroids[c][0] += scaled[i][0];
+                    newCentroids[c][1] += scaled[i][1];
+                    newCentroids[c][2] += scaled[i][2];
+                    counts[c]++;
+                }
+                for(let c=0; c<k; c++) {
+                    if(counts[c] > 0) {
+                        centroids[c][0] = newCentroids[c][0] / counts[c];
+                        centroids[c][1] = newCentroids[c][1] / counts[c];
+                        centroids[c][2] = newCentroids[c][2] / counts[c];
+                    }
+                }
+            }
+
+            data.forEach((r, idx) => {
+                r.clusterId = assignments[idx] + 1;
+            });
+
+            renderMergedTable(data);
+            render3DScatter(data, k);
+            renderClusterSummaryAndReport(data, k);
+        }
+
+        function renderMergedTable(data) {
+            document.getElementById('data-count-badge').innerText = data.length;
+            const tbody = document.getElementById('merged-table-body');
+            tbody.innerHTML = "";
+            
+            const clusterColors = ["bg-purple-100 text-purple-800", "bg-cyan-100 text-cyan-800", "bg-amber-100 text-amber-800", "bg-emerald-100 text-emerald-800", "bg-rose-100 text-rose-800", "bg-indigo-100 text-indigo-800"];
+
+            data.forEach(r => {
+                let cColor = clusterColors[(r.clusterId - 1) % clusterColors.length];
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 border-b border-slate-100 font-medium">${r.시도}</td>
+                        <td class="p-3 border-b border-slate-100">${r.시군구}</td>
+                        <td class="p-3 border-b border-slate-100 text-right">${r.총인구수.toLocaleString()}</td>
+                        <td class="p-3 border-b border-slate-100 text-right">${r.고령인구수.toLocaleString()}</td>
+                        <td class="p-3 border-b border-slate-100 text-right font-semibold text-slate-600">${r.노약자_비율_pct.toFixed(2)}%</td>
+                        <td class="p-3 border-b border-slate-100 text-right">${r.대형병원수}</td>
+                        <td class="p-3 border-b border-slate-100 text-right">${r.의과전문의수.toLocaleString()}</td>
+                        <td class="p-3 border-b border-slate-100 text-right text-rose-600 font-semibold">${r.인구_10만명당_대형병원수.toFixed(2)}</td>
+                        <td class="p-3 border-b border-slate-100 text-right text-cyan-600 font-semibold">${r.인구_10만명당_전문의수.toFixed(2)}</td>
+                        <td class="p-3 border-b border-slate-100 text-center">
+                            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${cColor}">군집 ${r.clusterId}</span>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function render3DScatter(data, k) {
+            const colors = ['#9333ea', '#06b6d4', '#f59e0b', '#10b981', '#f43f5e', '#4f46e5'];
+            let traces = [];
+
+            for(let c=1; c<=k; c++) {
+                let cData = data.filter(r => r.clusterId === c);
+                if(cData.length === 0) continue;
+
+                traces.push({
+                    x: cData.map(r => r.노약자_비율_pct),
+                    y: cData.map(r => r.인구_10만명당_대형병원수),
+                    z: cData.map(r => r.인구_10만명당_전문의수),
+                    mode: 'markers',
+                    name: `군집 ${c}`,
+                    text: cData.map(r => `${r.시도} ${r.시군구}`),
+                    marker: {
+                        size: 6,
+                        color: colors[(c-1) % colors.length],
+                        opacity: 0.8
+                    },
+                    type: 'scatter3d'
+                });
+            }
+
+            const layout = {
+                scene: {
+                    xaxis: {title: '노약자 비율 (%)', titlefont: {size: 10}},
+                    yaxis: {title: '10만명당 병원수', titlefont: {size: 10}},
+                    zaxis: {title: '10만명당 전문의수', titlefont: {size: 10}}
+                },
+                margin: {l:0, r:0, b:0, t:0},
+                legend: {orientation: 'h', y: 0.1}
+            };
+
+            Plotly.newPlot('chart-3d', traces, layout);
+        }
+
+        function renderClusterSummaryAndReport(data, k) {
+            const tbody = document.getElementById('cluster-table-body');
+            tbody.innerHTML = "";
+
+            let clusterSummaries = [];
+
+            for(let c=1; c<=k; c++) {
+                let cData = data.filter(r => r.clusterId === c);
+                if(cData.length === 0) continue;
+
+                let avgElderly = cData.reduce((a,b)=>a+b.노약자_비율_pct,0)/cData.length;
+                let avgHosp = cData.reduce((a,b)=>a+b.인구_10만명당_대형병원수,0)/cData.length;
+                let avgDoc = cData.reduce((a,b)=>a+b.인구_10만명당_전문의수,0)/cData.length;
+
+                clusterSummaries.push({ cId: c, avgElderly, avgHosp, avgDoc, count: cData.length });
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-2 font-bold text-purple-700">군집 ${c}</td>
+                        <td class="py-2 text-right">${avgElderly.toFixed(2)} %</td>
+                        <td class="py-2 text-right text-rose-600">${avgHosp.toFixed(2)}</td>
+                        <td class="py-2 text-right text-cyan-600">${avgDoc.toFixed(2)}</td>
+                        <td class="py-2 text-right font-bold text-slate-900">${cData.length} 곳</td>
+                    </tr>
+                `;
+            }
+
+            let criticalCluster = [...clusterSummaries].sort((a,b) => (a.avgHosp + a.avgDoc*0.01) - (b.avgHosp + b.avgDoc*0.01))[0];
+            
+            if(criticalCluster) {
+                document.getElementById('report-risk-status').innerText = `⚠️ 의료 격차 정밀 모니터링 경보: [군집 ${criticalCluster.cId}] 요주의`;
+                document.getElementById('report-description').innerHTML = `
+                    현재 데이터 분석 결과, <b>군집 ${criticalCluster.cId}</b>에 속한 ${criticalCluster.count}개 지역은 평균 노약자 비율이 <b>${criticalCluster.avgElderly.toFixed(2)}%</b>로 초고령화 위험에 노출되어 있으나, 인구 10만 명당 대형병원수(<b>${criticalCluster.avgHosp.toFixed(2)}개</b>) 및 전문의 인프라가 극도로 제한되어 보건 격차 지수가 가장 취약한 배후지로 분석되었습니다. 원격 의료 인프라 확충 및 거점 공공의료 지원이 시급합니다.
+                `;
+            }
+        }
+
+        function toggleAccordion(panelId) {
+            const panel = document.getElementById(panelId);
+            const icon = document.getElementById('accordion-icon');
+            if(panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                icon.style.transform = "rotate(180deg)";
+            } else {
+                panel.classList.add('hidden');
+                icon.style.transform = "rotate(0deg)";
+            }
+        }
+
+        function exportDatasetToExcel() {
+            if (latestAnalyzedDataset.length === 0) {
+                alert("다운로드할 데이터가 아직 준비되지 않았습니다. 파일을 연동하거나 데모 데이터를 적용해 주세요.");
+                return;
+            }
+
+            try {
+                const excelRows = latestAnalyzedDataset.map(row => ({
+                    "시도": row.시도,
+                    "시군구": row.시군구,
+                    "총인구수": row.총인구수,
+                    "고령인구수": row.고령인구수,
+                    "노약자 비율 (%)": Number(row.노약자_비율_pct.toFixed(2)),
+                    "대형병원수 (종합+상급)": row.대형병원수,
+                    "의과전문의수": row.의과전문의수,
+                    "인구 10만명당 대형병원수": Number(row.인구_10만명당_대형병원수.toFixed(2)),
+                    "인구 10만명당 전문의수": Number(row.인구_10만명당_전문의수.toFixed(2)),
+                    "AI 연산 소속군집": row.clusterId ? `군집 ${row.clusterId}` : "미분류"
+                }));
+
+                const worksheet = XLSX.utils.json_to_sheet(excelRows);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "보건의료 격차 분석데이터");
+                XLSX.writeFile(workbook, "AI_보건의료_격차_분석결과.xlsx");
+            } catch (err) {
+                alert("엑셀 다운로드 중 오류가 발생했습니다: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
