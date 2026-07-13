@@ -2861,5 +2861,12 @@
             }
         }
     </script>
+    // lucide 라이브러리가 정상 로드되었을 때만 실행하도록 변경
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  } else {
+    console.log("Lucide 아이콘 라이브러리를 불러오지 못했습니다.");
+  }
+</script>
 </body>
 </html>
